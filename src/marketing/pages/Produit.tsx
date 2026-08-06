@@ -1,5 +1,6 @@
 import { PageShell, PageHero } from '../PageShell';
 import { CheckList, CtaBanner, FaqList, KioskDemo, Section } from '../components';
+import { DashboardMockup, HeroTablet, PhoneQrMockup, RewardMockup } from '../illustrations';
 
 /** Pages produit : provenance client, avis Google, instant gagnant, tablette. */
 
@@ -32,6 +33,9 @@ export function ProvenanceClient() {
               savoir si elle progresse.
             </p>
           </div>
+        </div>
+        <div className="mx-auto mt-12 max-w-xl">
+          <DashboardMockup />
         </div>
       </Section>
       <CtaBanner title="Remplacez les impressions par des chiffres" />
@@ -68,6 +72,9 @@ export function AvisGoogle() {
               publication, que personne ne peut garantir.
             </p>
           </div>
+        </div>
+        <div className="mt-12 flex justify-center">
+          <PhoneQrMockup />
         </div>
       </Section>
       <CtaBanner title="Transformez plus de visites en avis" />
@@ -110,6 +117,9 @@ export function InstantGagnant() {
             </p>
           </div>
         </div>
+        <div className="mt-12 flex justify-center">
+          <RewardMockup />
+        </div>
       </Section>
       <CtaBanner title="Ajoutez un instant gagnant à votre questionnaire" />
     </PageShell>
@@ -124,6 +134,9 @@ export function TabletteClient() {
         subtitle="Trois questions, moins de 15 secondes, des gros boutons tactiles et un retour automatique au début : l'enquête en point de vente qui ne ralentit personne."
       />
       <Section title="Le parcours client">
+        <div className="mb-12 flex justify-center">
+          <HeroTablet />
+        </div>
         <KioskDemo />
         <div className="mt-8 grid gap-8 lg:grid-cols-2">
           <CheckList

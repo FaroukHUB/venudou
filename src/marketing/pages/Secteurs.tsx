@@ -1,5 +1,6 @@
 import { PageShell, PageHero } from '../PageShell';
 import { CheckList, CtaBanner, FaqList, Section } from '../components';
+import { DashboardMockup, StoresMockup } from '../illustrations';
 
 /** Pages sectorielles : restaurants, magasins, multi-établissements. */
 
@@ -93,6 +94,9 @@ export function Magasins() {
             </p>
           </div>
         </div>
+        <div className="mx-auto mt-12 max-w-xl">
+          <DashboardMockup />
+        </div>
       </Section>
       <CtaBanner title="Sachez enfin comment vos clients ont connu votre boutique" />
     </PageShell>
@@ -135,6 +139,9 @@ export function MultiEtablissements() {
               </a>
             </p>
           </div>
+        </div>
+        <div className="mx-auto mt-12 max-w-2xl">
+          <StoresMockup />
         </div>
       </Section>
       <Section title="Combien d'établissements pouvez-vous connecter ?" muted>

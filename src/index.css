@@ -92,3 +92,75 @@ body {
 .animate-step {
   animation: fade-slide-in 220ms ease-out;
 }
+
+/* ------------------------------------------------------------
+ * Site public — effets visuels légers (CSS uniquement, sans JS)
+ * ------------------------------------------------------------ */
+
+/* Scène 3D du hero : tablette inclinée en perspective */
+.hero-scene {
+  perspective: 1400px;
+}
+
+.hero-tablet {
+  transform: rotateY(-14deg) rotateX(8deg) rotateZ(1deg);
+  transform-style: preserve-3d;
+  transition: transform 600ms ease;
+  box-shadow:
+    0 40px 80px -24px rgba(20, 44, 82, 0.45),
+    0 12px 28px -12px rgba(20, 160, 168, 0.25);
+}
+
+.hero-scene:hover .hero-tablet {
+  transform: rotateY(-6deg) rotateX(3deg) rotateZ(0deg);
+}
+
+@keyframes float-y {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
+
+.animate-float {
+  animation: float-y 5s ease-in-out infinite;
+}
+
+.animate-float-slow {
+  animation: float-y 7s ease-in-out infinite;
+  animation-delay: 1.2s;
+}
+
+.animate-float-slower {
+  animation: float-y 9s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+/* Cartes qui se soulèvent au survol */
+.lift {
+  transition:
+    transform 250ms ease,
+    box-shadow 250ms ease;
+}
+
+.lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px -16px rgba(20, 44, 82, 0.25);
+}
+
+/* Accessibilité : respecter la préférence « réduire les animations » */
+@media (prefers-reduced-motion: reduce) {
+  .animate-float,
+  .animate-float-slow,
+  .animate-float-slower,
+  .animate-step {
+    animation: none;
+  }
+  .hero-tablet,
+  .lift {
+    transition: none;
+  }
+}

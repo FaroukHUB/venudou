@@ -1,37 +1,53 @@
-import { BarChart3, Gift, MapPin, MessagesSquare, Star, Tablet, Users } from 'lucide-react';
+import { BarChart3, Gift, MessagesSquare, Star, Tablet, Users } from 'lucide-react';
 import { PageShell } from '../PageShell';
 import { CheckList, CtaBanner, FaqList, FeatureCard, KioskDemo, Section } from '../components';
+import { Blobs, DashboardMockup, HeroTablet, StoresMockup } from '../illustrations';
 import { FAQ_ITEMS } from '../content/faq';
 import { PricingGrid } from './Tarifs';
 
 export default function Home() {
   return (
     <PageShell path="/">
-      {/* Hero */}
-      <section className="bg-gradient-to-b from-navy-50 to-white">
-        <div className="mx-auto max-w-6xl px-4 py-16 text-center sm:py-20">
-          <h1 className="mx-auto max-w-3xl text-4xl font-bold text-navy-900 sm:text-5xl">
-            Comprenez d'où viennent vos clients.
-          </h1>
-          <p className="mx-auto mt-5 max-w-2xl text-lg text-navy-600">
-            Découvrez les canaux qui attirent réellement vos clients, comparez vos établissements et
-            transformez davantage de visites en avis. Une tablette à la caisse, trois questions, des
-            statistiques fiables.
-          </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <a
-              href="/inscription"
-              className="rounded-xl bg-navy-800 px-6 py-3 font-semibold text-white hover:bg-navy-700"
-            >
-              Créer mon compte
-            </a>
-            <a
-              href="/fonctionnalites"
-              className="rounded-xl border border-navy-200 px-6 py-3 font-semibold text-navy-800 hover:bg-navy-50"
-            >
-              Découvrir les fonctionnalités
-            </a>
+      {/* Hero : promesse + tablette 3D animée */}
+      <section className="relative overflow-hidden bg-gradient-to-b from-navy-50 via-white to-white">
+        <Blobs />
+        <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-4 py-16 sm:py-20 lg:grid-cols-2">
+          <div className="text-center lg:text-left">
+            <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-turquoise-200 bg-turquoise-50 px-3.5 py-1.5 text-xs font-bold text-turquoise-700">
+              <Tablet className="size-3.5" aria-hidden /> La tablette qui interroge vos clients en
+              caisse
+            </p>
+            <h1 className="text-4xl font-bold text-navy-900 sm:text-5xl">
+              Comprenez{' '}
+              <span className="bg-gradient-to-r from-turquoise-500 to-navy-500 bg-clip-text text-transparent">
+                d'où viennent
+              </span>{' '}
+              vos clients.
+            </h1>
+            <p className="mt-5 text-lg text-navy-600">
+              Découvrez les canaux qui attirent réellement vos clients, comparez vos établissements
+              et transformez davantage de visites en avis. Une tablette à la caisse, trois
+              questions, des statistiques fiables.
+            </p>
+            <div className="mt-8 flex flex-wrap justify-center gap-3 lg:justify-start">
+              <a
+                href="/inscription"
+                className="lift rounded-xl bg-navy-800 px-6 py-3 font-semibold text-white hover:bg-navy-700"
+              >
+                Créer mon compte
+              </a>
+              <a
+                href="/fonctionnalites"
+                className="lift rounded-xl border border-navy-200 bg-white/70 px-6 py-3 font-semibold text-navy-800 hover:bg-navy-50"
+              >
+                Découvrir les fonctionnalités
+              </a>
+            </div>
+            <p className="mt-5 text-xs text-navy-400">
+              Installation en 2 minutes · données 100 % anonymes · fonctionne hors ligne
+            </p>
           </div>
+          <HeroTablet />
         </div>
       </section>
 
@@ -111,31 +127,47 @@ export default function Home() {
         title="Pensé pour les réseaux multi-établissements"
         intro="Chaque magasin a ses statistiques ; le siège a la vue d'ensemble. Notre client pilote Trust Industrie compare ainsi ses 3 magasins depuis un seul tableau de bord."
       >
-        <div className="grid items-start gap-8 lg:grid-cols-2">
-          <CheckList
-            items={[
-              'Statistiques séparées par établissement',
-              'Vue globale centralisée et comparaison en un tableau',
-              "Rôles d'équipe : propriétaire, administrateur, responsable d'établissement",
-              "Limites d'établissements selon votre offre, ajustables",
-            ]}
-          />
-          <p className="rounded-2xl border border-navy-100 bg-surface-muted p-5 text-sm text-navy-600">
-            <MapPin className="mb-2 size-6 text-turquoise-600" aria-hidden />
+        <div className="grid items-center gap-10 lg:grid-cols-2">
+          <div>
+            <CheckList
+              items={[
+                'Statistiques séparées par établissement',
+                'Vue globale centralisée et comparaison en un tableau',
+                "Rôles d'équipe : propriétaire, administrateur, responsable d'établissement",
+                "Limites d'établissements selon votre offre, ajustables",
+              ]}
+            />
             <a
               href="/cas-clients/trust-industrie"
-              className="font-semibold text-turquoise-700 hover:underline"
+              className="mt-5 inline-block font-semibold text-turquoise-700 hover:underline"
             >
               Découvrir le déploiement pilote Trust Industrie →
             </a>
-            <br />
-            Trois magasins équipés, des questionnaires adaptés à chaque point de vente et une
-            comparaison hebdomadaire des provenances.
-          </p>
+          </div>
+          <StoresMockup />
         </div>
       </Section>
 
-      <Section title="Des offres selon votre nombre d'établissements" muted>
+      <Section
+        title="Un tableau de bord clair, pensé pour décider"
+        intro="Répartition des provenances, évolution dans le temps, croisements par genre et par âge : vos chiffres sont lisibles d'un coup d'œil, filtrables par établissement et par période."
+        muted
+      >
+        <div className="grid items-center gap-10 lg:grid-cols-2">
+          <DashboardMockup />
+          <CheckList
+            items={[
+              'Vue générale : réponses du jour, de la semaine, du mois',
+              'Provenance nº1 et évolution en un coup d’œil',
+              'Filtres : période, établissement, tablette, provenance, genre, âge',
+              'Volume de réponses par jour et par heure',
+              'Suivi des scans d’avis et des gains distribués',
+            ]}
+          />
+        </div>
+      </Section>
+
+      <Section title="Des offres selon votre nombre d'établissements">
         <PricingGrid compact />
         <p className="mt-6 text-center">
           <a href="/tarifs" className="font-semibold text-turquoise-600 hover:underline">

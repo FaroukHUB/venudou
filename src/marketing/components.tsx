@@ -1,5 +1,16 @@
 import type { ReactNode } from 'react';
-import { Check, type LucideIcon } from 'lucide-react';
+import {
+  Check,
+  EyeOff,
+  Facebook,
+  Instagram,
+  MessagesSquare,
+  MoreHorizontal,
+  Music2,
+  Search,
+  User,
+  type LucideIcon,
+} from 'lucide-react';
 import { SITE, type PageMeta } from './seo';
 import type { FaqItem } from './content/faq';
 
@@ -304,39 +315,84 @@ export function CtaBanner({
 
 /** Démo statique du parcours tablette (contenu principal dans le HTML). */
 export function KioskDemo() {
-  const steps = [
+  const steps: {
+    step: string;
+    question: string;
+    options: { label: string; icon?: LucideIcon; highlight?: boolean }[];
+    hint: string;
+  }[] = [
     {
       step: '1/3',
       question: 'Comment avez-vous connu notre établissement ?',
-      options: ['Facebook', 'Instagram', 'TikTok', 'Google', 'Bouche-à-oreille', 'Autre'],
+      options: [
+        { label: 'Facebook', icon: Facebook },
+        { label: 'Instagram', icon: Instagram, highlight: true },
+        { label: 'TikTok', icon: Music2 },
+        { label: 'Google', icon: Search },
+        { label: 'Bouche-à-oreille', icon: MessagesSquare },
+        { label: 'Autre', icon: MoreHorizontal },
+      ],
+      hint: 'Un appui suffit — étape suivante automatique',
     },
     {
       step: '2/3',
       question: 'Vous êtes…',
-      options: ['Homme', 'Femme', 'Je préfère ne pas répondre'],
+      options: [
+        { label: 'Homme', icon: User },
+        { label: 'Femme', icon: User, highlight: true },
+        { label: 'Je préfère ne pas répondre', icon: EyeOff },
+      ],
+      hint: 'Question facultative — passable en un geste',
     },
     {
       step: '3/3',
       question: 'Quel âge avez-vous ?',
-      options: ['18–24 ans', '25–34 ans', '35–44 ans', '45–54 ans'],
+      options: [
+        { label: '18–24 ans' },
+        { label: '25–34 ans', highlight: true },
+        { label: '35–44 ans' },
+        { label: '45–54 ans' },
+      ],
+      hint: 'Tranches entièrement personnalisables',
     },
   ];
   return (
     <div className="grid gap-5 md:grid-cols-3">
-      {steps.map((s) => (
-        <div key={s.step} className="rounded-3xl bg-navy-900 p-5 text-white shadow-lg">
-          <p className="text-center text-sm font-semibold text-turquoise-300">{s.step}</p>
-          <p className="mt-2 min-h-12 text-center text-base font-bold">{s.question}</p>
-          <div className="mt-4 grid grid-cols-2 gap-2">
-            {s.options.map((o) => (
+      {steps.map((s, stepIndex) => (
+        <div
+          key={s.step}
+          className={`lift rounded-3xl bg-navy-900 p-5 text-white shadow-lg ${
+            stepIndex === 1 ? 'md:translate-y-3' : ''
+          }`}
+        >
+          <div className="mb-3 flex items-center justify-center gap-1.5">
+            {[0, 1, 2].map((i) => (
               <span
-                key={o}
-                className="rounded-xl bg-white/10 px-2 py-2.5 text-center text-xs font-semibold"
+                key={i}
+                className={`h-1.5 rounded-full ${
+                  i <= stepIndex ? 'w-6 bg-turquoise-400' : 'w-3 bg-white/15'
+                }`}
+              />
+            ))}
+            <span className="ml-2 text-xs font-bold text-turquoise-300">{s.step}</span>
+          </div>
+          <p className="min-h-12 text-center text-base font-bold">{s.question}</p>
+          <div className="mt-4 grid grid-cols-2 gap-2">
+            {s.options.map(({ label, icon: Icon, highlight }) => (
+              <span
+                key={label}
+                className={`flex items-center justify-center gap-1.5 rounded-xl px-2 py-2.5 text-center text-xs font-semibold transition-colors ${
+                  highlight
+                    ? 'bg-turquoise-500 text-white shadow-md shadow-turquoise-500/30'
+                    : 'bg-white/10 hover:bg-white/20'
+                } ${label.length > 16 ? 'col-span-2' : ''}`}
               >
-                {o}
+                {Icon && <Icon className="size-4 shrink-0" aria-hidden />}
+                {label}
               </span>
             ))}
           </div>
+          <p className="mt-3 text-center text-[10px] text-navy-300">{s.hint}</p>
         </div>
       ))}
     </div>
