@@ -2,7 +2,7 @@
 -- VenuD'où — 0001 : extensions, identité, tenancy, offre, établissements, tablettes
 -- ============================================================
 
-create extension if not exists pgcrypto;
+create extension if not exists pgcrypto with schema extensions;
 
 -- ------------------------------------------------------------
 -- Helpers génériques

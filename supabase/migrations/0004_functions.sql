@@ -4,7 +4,7 @@
 
 -- Génère un code court lisible (sans caractères ambigus), aléa pgcrypto.
 create or replace function public.generate_short_code(p_length integer default 8)
-returns text language plpgsql volatile security definer set search_path = public as $$
+returns text language plpgsql volatile security definer set search_path = public, extensions as $$
 declare
   v_alphabet constant text := 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
   v_bytes bytea;
@@ -61,7 +61,7 @@ end $$;
 -- ------------------------------------------------------------
 
 create or replace function public.create_device_activation_code(p_device uuid)
-returns text language plpgsql volatile security definer set search_path = public as $$
+returns text language plpgsql volatile security definer set search_path = public, extensions as $$
 declare
   v_org uuid;
   v_location uuid;
@@ -225,7 +225,7 @@ create or replace function public.process_survey_submission(
   p_started_at timestamptz,
   p_completed_at timestamptz,
   p_answers jsonb -- [{questionId, optionId?, freeText?}]
-) returns jsonb language plpgsql volatile security definer set search_path = public as $$
+) returns jsonb language plpgsql volatile security definer set search_path = public, extensions as $$
 declare
   v_device public.devices%rowtype;
   v_questionnaire_id uuid;
