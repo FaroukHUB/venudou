@@ -42,7 +42,10 @@ export default function Onboarding() {
       {memberships.length > 0 && (
         <p className="mb-4 text-sm text-navy-500">
           Vous appartenez déjà à une organisation —{' '}
-          <button className="font-semibold text-turquoise-600 hover:underline" onClick={() => navigate('/app')}>
+          <button
+            className="font-semibold text-turquoise-600 hover:underline"
+            onClick={() => navigate('/app')}
+          >
             accéder au tableau de bord
           </button>
           .

@@ -84,7 +84,11 @@ export default function Etablissements() {
         }
         actions={
           isAdmin && (
-            <Button onClick={openCreate} disabled={limitReached} title={limitReached ? 'Limite de votre offre atteinte' : undefined}>
+            <Button
+              onClick={openCreate}
+              disabled={limitReached}
+              title={limitReached ? 'Limite de votre offre atteinte' : undefined}
+            >
               <Plus className="size-4" aria-hidden /> Ajouter un établissement
             </Button>
           )

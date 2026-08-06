@@ -29,7 +29,11 @@ export default function Inscription() {
     });
     setLoading(false);
     if (err) {
-      setError(err.message === 'User already registered' ? 'Un compte existe déjà avec cet e-mail.' : err.message);
+      setError(
+        err.message === 'User already registered'
+          ? 'Un compte existe déjà avec cet e-mail.'
+          : err.message,
+      );
       return;
     }
     // Selon la configuration Supabase : session immédiate ou confirmation e-mail (SMTP Brevo).
@@ -47,7 +51,10 @@ export default function Inscription() {
           Un e-mail de confirmation vient de vous être envoyé à <strong>{email}</strong>. Cliquez
           sur le lien pour activer votre compte, puis connectez-vous.
         </p>
-        <Link to="/connexion" className="mt-4 inline-block font-semibold text-turquoise-600 hover:underline">
+        <Link
+          to="/connexion"
+          className="mt-4 inline-block font-semibold text-turquoise-600 hover:underline"
+        >
           Aller à la connexion
         </Link>
       </AuthShell>

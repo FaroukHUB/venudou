@@ -59,17 +59,25 @@ export const HELP_ARTICLES: HelpArticle[] = [
     title: 'Comment configurer les provenances ?',
     body: [
       "Dans « Questionnaire », sélectionnez l'établissement puis la question « Comment avez-vous connu notre établissement ? ». Vous pouvez désactiver des provenances, changer leur ordre avec les flèches, modifier les libellés et choisir une icône.",
-      "Vous pouvez aussi ajouter vos propres provenances (ex. : « Radio locale »). Pensez à cliquer sur « Publier sur les tablettes » pour pousser les changements.",
+      'Vous pouvez aussi ajouter vos propres provenances (ex. : « Radio locale »). Pensez à cliquer sur « Publier sur les tablettes » pour pousser les changements.',
     ],
     link: { to: '/app/questionnaire', label: 'Ouvrir Questionnaire' },
-    keywords: ['provenance', 'source', 'options', 'facebook', 'instagram', 'configurer', 'question'],
+    keywords: [
+      'provenance',
+      'source',
+      'options',
+      'facebook',
+      'instagram',
+      'configurer',
+      'question',
+    ],
   },
   {
     slug: 'modifier-tranches-age',
     theme: 'Questionnaire',
     title: "Comment modifier les tranches d'âge ?",
     body: [
-      "Dans « Questionnaire », ouvrez la question « Quel âge avez-vous ? ». Les tranches sont entièrement configurables : modifiez les libellés, ajoutez ou supprimez des tranches, réordonnez-les, ou désactivez la question complètement.",
+      'Dans « Questionnaire », ouvrez la question « Quel âge avez-vous ? ». Les tranches sont entièrement configurables : modifiez les libellés, ajoutez ou supprimez des tranches, réordonnez-les, ou désactivez la question complètement.',
       'Publiez ensuite les changements pour les envoyer aux tablettes.',
     ],
     link: { to: '/app/questionnaire', label: 'Ouvrir Questionnaire' },
@@ -80,7 +88,7 @@ export const HELP_ARTICLES: HelpArticle[] = [
     theme: 'Récompenses',
     title: 'Comment créer une récompense (instant gagnant) ?',
     body: [
-      "Dans « Récompenses », créez une campagne : choisissez le type (réduction, produit offert…), le libellé affiché au client, la fréquence (1 gagnant toutes les N participations), la validité et les éventuels plafonds.",
+      'Dans « Récompenses », créez une campagne : choisissez le type (réduction, produit offert…), le libellé affiché au client, la fréquence (1 gagnant toutes les N participations), la validité et les éventuels plafonds.',
       "Le tirage est aléatoire et sécurisé : la position gagnante n'est jamais visible à l'avance. Le gagnant reçoit un code et un QR code uniques, utilisables une seule fois.",
       "Important : la récompense est liée à la participation au questionnaire, jamais à la publication d'un avis Google.",
     ],
@@ -92,7 +100,7 @@ export const HELP_ARTICLES: HelpArticle[] = [
     theme: 'Récompenses',
     title: 'Comment scanner et valider un gain ?',
     body: [
-      "Quand un client présente son code (ou son QR code), ouvrez « Récompenses » et saisissez le code dans « Vérifier et valider un code », puis cliquez sur Valider.",
+      'Quand un client présente son code (ou son QR code), ouvrez « Récompenses » et saisissez le code dans « Vérifier et valider un code », puis cliquez sur Valider.',
       "Si le code est valide, la récompense s'affiche et le code est immédiatement marqué comme utilisé : il ne pourra pas servir deux fois. Les codes expirés ou déjà utilisés sont refusés avec un message clair.",
     ],
     link: { to: '/app/recompenses', label: 'Ouvrir Récompenses' },

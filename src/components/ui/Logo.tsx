@@ -4,7 +4,13 @@ import clsx from 'clsx';
  * Logo VenuD'où — utilise les placeholders de public/brand/.
  * Remplacer les fichiers SVG par le logo validé (mêmes noms).
  */
-export function Logo({ variant = 'full', className }: { variant?: 'full' | 'mark'; className?: string }) {
+export function Logo({
+  variant = 'full',
+  className,
+}: {
+  variant?: 'full' | 'mark';
+  className?: string;
+}) {
   if (variant === 'mark') {
     return (
       <img

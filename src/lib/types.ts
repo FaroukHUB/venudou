@@ -132,7 +132,8 @@ export interface ReviewLink {
   is_active: boolean;
 }
 
-export type ReviewEventType = 'prompt_shown' | 'accepted' | 'declined' | 'qr_displayed' | 'link_opened';
+export type ReviewEventType =
+  'prompt_shown' | 'accepted' | 'declined' | 'qr_displayed' | 'link_opened';
 
 export interface ReviewEvent {
   id: string;

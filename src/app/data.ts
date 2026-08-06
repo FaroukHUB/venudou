@@ -74,7 +74,9 @@ export async function fetchRewardCodes(orgId: string, period: Period): Promise<R
 export async function fetchDevices(orgId: string): Promise<Device[]> {
   const { data, error } = await supabase
     .from('devices')
-    .select('id, organization_id, location_id, name, status, activated_at, last_seen_at, created_at')
+    .select(
+      'id, organization_id, location_id, name, status, activated_at, last_seen_at, created_at',
+    )
     .eq('organization_id', orgId)
     .order('name');
   if (error) throw new Error(error.message);

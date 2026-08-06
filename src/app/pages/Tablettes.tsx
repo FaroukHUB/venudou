@@ -20,11 +20,15 @@ export default function Tablettes() {
   const [locationId, setLocationId] = useState('');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [activationCode, setActivationCode] = useState<{ device: string; code: string } | null>(null);
+  const [activationCode, setActivationCode] = useState<{ device: string; code: string } | null>(
+    null,
+  );
 
   const load = useCallback(() => {
     if (!orgId) return;
-    fetchDevices(orgId).then(setDevices).catch((e: Error) => setError(e.message));
+    fetchDevices(orgId)
+      .then(setDevices)
+      .catch((e: Error) => setError(e.message));
   }, [orgId]);
 
   useEffect(load, [load]);

@@ -58,9 +58,16 @@ export default function Overview() {
 
   return (
     <div>
-      <PageHeader title="Aperçu global" description="Utilisation générale de la plateforme VenuD'où." />
+      <PageHeader
+        title="Aperçu global"
+        description="Utilisation générale de la plateforme VenuD'où."
+      />
       <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4">
-        <StatCard label="Organisations" value={totals.organizations} sub={`${totals.suspended} suspendue(s)`} />
+        <StatCard
+          label="Organisations"
+          value={totals.organizations}
+          sub={`${totals.suspended} suspendue(s)`}
+        />
         <StatCard label="Établissements" value={totals.locations} />
         <StatCard label="Utilisateurs" value={totals.users} />
         <StatCard label="Comptes gratuits" value={totals.freeAccounts} accent="violet" />
@@ -76,8 +83,12 @@ export default function Overview() {
       <Card className="mt-6 max-w-2xl">
         <CardTitle>Rappels</CardTitle>
         <ul className="list-disc space-y-1 pl-5 text-sm text-navy-600">
-          <li>Le rôle super-admin s'attribue uniquement en base (table super_admins, clé service).</li>
-          <li>Les suspensions et overrides de limites sont journalisés dans les journaux d'audit.</li>
+          <li>
+            Le rôle super-admin s'attribue uniquement en base (table super_admins, clé service).
+          </li>
+          <li>
+            Les suspensions et overrides de limites sont journalisés dans les journaux d'audit.
+          </li>
           <li>Les prix des offres se modifient dans « Plans & offres » — jamais dans le code.</li>
         </ul>
       </Card>

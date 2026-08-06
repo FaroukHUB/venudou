@@ -4,6 +4,12 @@ import { rateLimit, randomToken, serviceClient, sha256Hex, type Env } from './li
 
 const app = new Hono<{ Bindings: Env }>();
 
+// Erreur inattendue (ex. secrets Supabase absents) : réponse propre, sans fuite.
+app.onError((err, c) => {
+  console.error('worker error:', err.message);
+  return c.json({ error: 'SERVICE_UNAVAILABLE' }, 503);
+});
+
 // ------------------------------------------------------------
 // Schémas Zod : toutes les entrées kiosque sont validées ici.
 // ------------------------------------------------------------
@@ -92,7 +98,8 @@ app.post('/api/kiosk/sessions', async (c) => {
   const tokenHash = await bearerTokenHash(c);
   if (!tokenHash) return c.json({ error: 'UNAUTHORIZED' }, 401);
   // Limite volontairement large : la synchro hors ligne peut envoyer un lot.
-  if (!rateLimit(`sessions:${tokenHash}`, 60, 60_000)) return c.json({ error: 'RATE_LIMITED' }, 429);
+  if (!rateLimit(`sessions:${tokenHash}`, 60, 60_000))
+    return c.json({ error: 'RATE_LIMITED' }, 429);
 
   const parsed = sessionSchema.safeParse(await c.req.json().catch(() => null));
   if (!parsed.success) return c.json({ error: 'INVALID_INPUT' }, 400);

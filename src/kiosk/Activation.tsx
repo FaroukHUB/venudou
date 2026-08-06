@@ -79,7 +79,13 @@ export default function Activation() {
               {error}
             </p>
           )}
-          <Button type="submit" variant="secondary" size="kiosk" className="w-full" loading={loading}>
+          <Button
+            type="submit"
+            variant="secondary"
+            size="kiosk"
+            className="w-full"
+            loading={loading}
+          >
             Activer
           </Button>
         </form>

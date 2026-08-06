@@ -13,6 +13,7 @@ export default defineConfig({
   },
   build: {
     sourcemap: false,
+    manifest: true, // consommé par scripts/prerender.mjs (feuilles de style)
     chunkSizeWarningLimit: 900,
   },
 });

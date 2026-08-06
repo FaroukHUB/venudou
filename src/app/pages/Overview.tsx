@@ -1,7 +1,13 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router';
 import { useOrg } from '@/lib/org-context';
-import { fetchDevices, fetchReviewEvents, fetchRewardCodes, fetchSessions, periodFromPreset } from '../data';
+import {
+  fetchDevices,
+  fetchReviewEvents,
+  fetchRewardCodes,
+  fetchSessions,
+  periodFromPreset,
+} from '../data';
 import type { SessionLite } from '@/lib/stats';
 import { countByDay, countByKind, countByLocation } from '@/lib/stats';
 import { isDeviceOnline } from '@/lib/format';
@@ -118,7 +124,10 @@ export default function Overview() {
           {locations.length === 0 ? (
             <p className="text-sm text-navy-500">
               Aucun établissement.{' '}
-              <Link to="/app/etablissements" className="font-semibold text-turquoise-600 hover:underline">
+              <Link
+                to="/app/etablissements"
+                className="font-semibold text-turquoise-600 hover:underline"
+              >
                 Créer le premier
               </Link>
             </p>
@@ -152,7 +161,10 @@ export default function Overview() {
           {devices.length === 0 ? (
             <p className="text-sm text-navy-500">
               Aucune tablette.{' '}
-              <Link to="/app/tablettes" className="font-semibold text-turquoise-600 hover:underline">
+              <Link
+                to="/app/tablettes"
+                className="font-semibold text-turquoise-600 hover:underline"
+              >
                 Installer une tablette
               </Link>
             </p>

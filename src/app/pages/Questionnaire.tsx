@@ -5,7 +5,7 @@ import { useOrg } from '@/lib/org-context';
 import { iconFor, OPTION_ICONS } from '@/lib/icons';
 import type { Question, QuestionOption, Questionnaire } from '@/lib/types';
 import { PageHeader, Spinner, Badge, Toggle, ErrorState } from '@/components/ui/misc';
-import { Card, CardTitle } from '@/components/ui/Card';
+import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { SelectField, InputField } from '@/components/ui/Field';
 import { Modal } from '@/components/ui/Modal';
@@ -153,14 +153,23 @@ export default function QuestionnairePage() {
             <Button variant="ghost" onClick={() => setPreviewOpen(true)} disabled={!questions}>
               <Eye className="size-4" aria-hidden /> Prévisualiser
             </Button>
-            <Button variant="secondary" onClick={publish} loading={publishing} disabled={!questionnaire}>
+            <Button
+              variant="secondary"
+              onClick={publish}
+              loading={publishing}
+              disabled={!questionnaire}
+            >
               <Send className="size-4" aria-hidden /> Publier sur les tablettes
             </Button>
           </>
         }
       />
       <div className="mb-4 max-w-sm">
-        <SelectField label="Établissement" value={locationId} onChange={(e) => setLocationId(e.target.value)}>
+        <SelectField
+          label="Établissement"
+          value={locationId}
+          onChange={(e) => setLocationId(e.target.value)}
+        >
           {locations.map((l) => (
             <option key={l.id} value={l.id}>
               {l.name}
@@ -182,7 +191,11 @@ export default function QuestionnairePage() {
             <Card key={q.id}>
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
-                  <Badge tone={q.kind === 'source' ? 'turquoise' : q.kind === 'custom' ? 'violet' : 'navy'}>
+                  <Badge
+                    tone={
+                      q.kind === 'source' ? 'turquoise' : q.kind === 'custom' ? 'violet' : 'navy'
+                    }
+                  >
                     {kindLabels[q.kind]}
                   </Badge>
                   {!q.enabled && <Badge tone="gray">Désactivée</Badge>}
@@ -229,7 +242,8 @@ export default function QuestionnairePage() {
                 defaultValue={q.label}
                 aria-label="Intitulé de la question"
                 onBlur={(e) => {
-                  if (e.target.value !== q.label) void updateQuestion(q.id, { label: e.target.value });
+                  if (e.target.value !== q.label)
+                    void updateQuestion(q.id, { label: e.target.value });
                 }}
               />
               <ul className="mt-3 space-y-1.5">
@@ -253,7 +267,8 @@ export default function QuestionnairePage() {
                         defaultValue={o.label}
                         aria-label={`Libellé de l'option ${o.label}`}
                         onBlur={(e) => {
-                          if (e.target.value !== o.label) void updateOption(o.id, { label: e.target.value });
+                          if (e.target.value !== o.label)
+                            void updateOption(o.id, { label: e.target.value });
                         }}
                       />
                       {o.is_optout && <Badge tone="gray">Refus</Badge>}
@@ -293,7 +308,12 @@ export default function QuestionnairePage() {
                 })}
               </ul>
               {(q.kind === 'source' || q.kind === 'age_range' || q.kind === 'custom') && (
-                <Button variant="ghost" size="sm" className="mt-3" onClick={() => setNewOptionFor(q)}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="mt-3"
+                  onClick={() => setNewOptionFor(q)}
+                >
                   <Plus className="size-4" aria-hidden /> Ajouter une option
                 </Button>
               )}
@@ -303,7 +323,11 @@ export default function QuestionnairePage() {
       )}
 
       {/* Prévisualisation */}
-      <Modal open={previewOpen} onClose={() => setPreviewOpen(false)} title="Prévisualisation tablette">
+      <Modal
+        open={previewOpen}
+        onClose={() => setPreviewOpen(false)}
+        title="Prévisualisation tablette"
+      >
         <div className="space-y-6">
           {questions
             ?.filter((q) => q.enabled)
@@ -336,7 +360,11 @@ export default function QuestionnairePage() {
       </Modal>
 
       {/* Choix d'icône */}
-      <Modal open={Boolean(iconPicker)} onClose={() => setIconPicker(null)} title="Choisir une icône">
+      <Modal
+        open={Boolean(iconPicker)}
+        onClose={() => setIconPicker(null)}
+        title="Choisir une icône"
+      >
         <div className="grid grid-cols-7 gap-2">
           <button
             className="flex aspect-square items-center justify-center rounded-xl border border-navy-100 text-xs text-navy-400 hover:bg-navy-50"
@@ -364,7 +392,11 @@ export default function QuestionnairePage() {
       </Modal>
 
       {/* Nouvelle option */}
-      <Modal open={Boolean(newOptionFor)} onClose={() => setNewOptionFor(null)} title="Ajouter une option">
+      <Modal
+        open={Boolean(newOptionFor)}
+        onClose={() => setNewOptionFor(null)}
+        title="Ajouter une option"
+      >
         <div className="space-y-4">
           <InputField
             label="Libellé"

@@ -51,12 +51,18 @@ export default function Aide() {
 
   return (
     <div>
-      <PageHeader title="Centre d'aide" description="Documentation, recherche et assistant guidé." />
+      <PageHeader
+        title="Centre d'aide"
+        description="Documentation, recherche et assistant guidé."
+      />
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="space-y-4 lg:col-span-2">
           <div className="flex flex-wrap gap-2">
             <label className="relative flex-1">
-              <Search className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-navy-300" aria-hidden />
+              <Search
+                className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-navy-300"
+                aria-hidden
+              />
               <input
                 className="w-full rounded-xl border border-navy-200 bg-white py-2.5 pr-3 pl-9 text-sm"
                 placeholder="Rechercher dans l'aide…"
@@ -107,7 +113,10 @@ export default function Aide() {
                   {entry.answer.articles.map((a) => (
                     <p key={a.slug} className="mt-1.5">
                       {a.link ? (
-                        <Link to={a.link.to} className="font-semibold text-turquoise-600 hover:underline">
+                        <Link
+                          to={a.link.to}
+                          className="font-semibold text-turquoise-600 hover:underline"
+                        >
                           {a.title}
                         </Link>
                       ) : (

@@ -6,7 +6,10 @@ import { PageHeader, Badge, Spinner } from '@/components/ui/misc';
 import { Card, CardTitle } from '@/components/ui/Card';
 import { formatDate, formatPrice } from '@/lib/format';
 
-const STATUS_LABELS: Record<string, { label: string; tone: 'green' | 'turquoise' | 'red' | 'gray' }> = {
+const STATUS_LABELS: Record<
+  string,
+  { label: string; tone: 'green' | 'turquoise' | 'red' | 'gray' }
+> = {
   trialing: { label: "Période d'essai", tone: 'turquoise' },
   active: { label: 'Actif', tone: 'green' },
   free: { label: 'Accès gratuit', tone: 'green' },
@@ -33,7 +36,10 @@ export default function Abonnement() {
 
   return (
     <div>
-      <PageHeader title="Abonnement" description="Votre offre actuelle et les offres disponibles. Le paiement en ligne arrive bientôt — contactez-nous pour changer d'offre." />
+      <PageHeader
+        title="Abonnement"
+        description="Votre offre actuelle et les offres disponibles. Le paiement en ligne arrive bientôt — contactez-nous pour changer d'offre."
+      />
       <Card className="mb-6 max-w-xl">
         <CardTitle>Votre offre</CardTitle>
         <div className="flex items-center gap-3">
@@ -61,12 +67,12 @@ export default function Abonnement() {
           <Card key={p.id} className={p.id === subscription?.plan_id ? 'border-turquoise-400' : ''}>
             <p className="font-bold text-navy-900">{p.name}</p>
             <p className="mt-1 text-2xl font-bold text-navy-800">
-              {p.max_locations === null ? 'Sur devis' : `${formatPrice(p.price_monthly_cents)} / mois`}
+              {p.max_locations === null
+                ? 'Sur devis'
+                : `${formatPrice(p.price_monthly_cents)} / mois`}
             </p>
             <p className="mt-1 text-sm text-navy-500">{p.description}</p>
-            {p.id === subscription?.plan_id && (
-              <Badge tone="turquoise">Votre offre</Badge>
-            )}
+            {p.id === subscription?.plan_id && <Badge tone="turquoise">Votre offre</Badge>}
           </Card>
         ))}
       </div>

@@ -137,9 +137,7 @@ export default function AppLayout() {
           {menuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
         </button>
       </div>
-      {menuOpen && (
-        <div className="fixed inset-0 z-30 bg-white pt-14 lg:hidden">{sidebar}</div>
-      )}
+      {menuOpen && <div className="fixed inset-0 z-30 bg-white pt-14 lg:hidden">{sidebar}</div>}
       <main className="w-full flex-1 px-4 pt-16 pb-10 sm:px-6 lg:px-8 lg:pt-8">
         <Suspense fallback={<Spinner />}>
           <Routes>

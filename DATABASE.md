@@ -2,13 +2,13 @@
 
 Migrations versionnées dans `supabase/migrations/` :
 
-| Fichier | Contenu |
-| --- | --- |
-| `0001_core.sql` | Extensions, profils, super-admins, organisations, membres, plans, abonnements, établissements, tablettes, codes d'activation |
-| `0002_questionnaires.sql` | Questionnaires, questions, options, sessions, réponses + configuration par défaut |
-| `0003_reviews_rewards.sql` | Liens d'avis, événements d'avis, campagnes de récompenses, blocs de tirage, codes, validations, journaux d'audit |
-| `0004_functions.sql` | Fonctions métier (`security definer`) : création d'organisation, activation tablette, soumission de session + tirage, validation de gain |
-| `0005_rls.sql` | Activation RLS + politiques sur toutes les tables |
+| Fichier                    | Contenu                                                                                                                                  |
+| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `0001_core.sql`            | Extensions, profils, super-admins, organisations, membres, plans, abonnements, établissements, tablettes, codes d'activation             |
+| `0002_questionnaires.sql`  | Questionnaires, questions, options, sessions, réponses + configuration par défaut                                                        |
+| `0003_reviews_rewards.sql` | Liens d'avis, événements d'avis, campagnes de récompenses, blocs de tirage, codes, validations, journaux d'audit                         |
+| `0004_functions.sql`       | Fonctions métier (`security definer`) : création d'organisation, activation tablette, soumission de session + tirage, validation de gain |
+| `0005_rls.sql`             | Activation RLS + politiques sur toutes les tables                                                                                        |
 
 Seed de développement : `supabase/seed.sql` (plans + organisation pilote
 « Trust Industrie » avec 3 établissements). Les plans sont aussi insérés par
@@ -144,27 +144,27 @@ par organisation. Voir les fichiers SQL pour la liste exhaustive.
 RLS **activée sur toutes les tables**. Aucune table n'est lisible
 publiquement. Résumé des politiques (détail dans `0005_rls.sql`) :
 
-| Table | SELECT | INSERT/UPDATE/DELETE |
-| --- | --- | --- |
-| profiles | soi-même + super-admin | soi-même (update) |
-| super_admins | soi-même (vérif. rôle) | personne (service uniquement) |
-| organizations | membres + super-admin | owner/admin (update) ; création via RPC ; super-admin |
-| organization_members | membres de l'org + soi-même | owner/admin de l'org |
-| member_locations | membres de l'org | owner/admin |
-| plans | tous (anon inclus, plans actifs) — tarifs publics | super-admin |
-| organization_subscriptions | membres | super-admin uniquement |
-| locations | owner/admin : toutes ; manager : les siennes | owner/admin (limite d'établissements par trigger) |
-| devices | idem locations (sans `token_hash`, exclu par GRANT colonne) | owner/admin |
-| device_activation_codes | personne | via RPC uniquement |
-| questionnaires/questions/options | membres (managers : leurs établissements) | owner/admin + manager sur ses établissements |
-| survey_sessions / survey_answers | membres (managers : leurs établissements) | **service uniquement** (Worker) — aucune lecture publique |
-| review_links | membres | owner/admin + manager |
-| review_events | membres | service uniquement |
-| reward_campaigns | membres | owner/admin + manager |
-| reward_blocks | personne | service uniquement |
-| reward_codes | membres | validation via RPC `redeem_reward_code` |
-| reward_redemptions | membres | via RPC |
-| audit_logs | super-admin + owner/admin (son org) | via fonctions uniquement |
+| Table                            | SELECT                                                      | INSERT/UPDATE/DELETE                                      |
+| -------------------------------- | ----------------------------------------------------------- | --------------------------------------------------------- |
+| profiles                         | soi-même + super-admin                                      | soi-même (update)                                         |
+| super_admins                     | soi-même (vérif. rôle)                                      | personne (service uniquement)                             |
+| organizations                    | membres + super-admin                                       | owner/admin (update) ; création via RPC ; super-admin     |
+| organization_members             | membres de l'org + soi-même                                 | owner/admin de l'org                                      |
+| member_locations                 | membres de l'org                                            | owner/admin                                               |
+| plans                            | tous (anon inclus, plans actifs) — tarifs publics           | super-admin                                               |
+| organization_subscriptions       | membres                                                     | super-admin uniquement                                    |
+| locations                        | owner/admin : toutes ; manager : les siennes                | owner/admin (limite d'établissements par trigger)         |
+| devices                          | idem locations (sans `token_hash`, exclu par GRANT colonne) | owner/admin                                               |
+| device_activation_codes          | personne                                                    | via RPC uniquement                                        |
+| questionnaires/questions/options | membres (managers : leurs établissements)                   | owner/admin + manager sur ses établissements              |
+| survey_sessions / survey_answers | membres (managers : leurs établissements)                   | **service uniquement** (Worker) — aucune lecture publique |
+| review_links                     | membres                                                     | owner/admin + manager                                     |
+| review_events                    | membres                                                     | service uniquement                                        |
+| reward_campaigns                 | membres                                                     | owner/admin + manager                                     |
+| reward_blocks                    | personne                                                    | service uniquement                                        |
+| reward_codes                     | membres                                                     | validation via RPC `redeem_reward_code`                   |
+| reward_redemptions               | membres                                                     | via RPC                                                   |
+| audit_logs                       | super-admin + owner/admin (son org)                         | via fonctions uniquement                                  |
 
 Le super-admin a un accès global en lecture (et écriture ciblée) via
 `is_super_admin()` ajouté à chaque politique concernée.
@@ -180,7 +180,7 @@ Le super-admin a un accès global en lecture (et écriture ciblée) via
 - `get_kiosk_config(device_id)` — service ; questionnaire publié + avis +
   campagne active.
 - `process_survey_submission(device_id, client_session_id, started_at,
-  completed_at, answers jsonb)` — service ; insertion idempotente + tirage
+completed_at, answers jsonb)` — service ; insertion idempotente + tirage
   sécurisé de l'instant gagnant (verrou advisory par campagne).
 - `redeem_reward_code(code)` — membre de l'org ; valide un code `available`
   non expiré, une seule fois.

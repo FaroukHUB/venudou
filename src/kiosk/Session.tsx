@@ -2,7 +2,13 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 import QRCode from 'qrcode';
 import { ChevronRight, Gift, PartyPopper, Star, WifiOff } from 'lucide-react';
-import type { KioskAnswer, KioskConfig, KioskOption, KioskQuestion, KioskReward } from '@/lib/types';
+import type {
+  KioskAnswer,
+  KioskConfig,
+  KioskOption,
+  KioskQuestion,
+  KioskReward,
+} from '@/lib/types';
 import { fetchKioskConfig, sendReviewEvent, startAutoSync, submitOrQueue } from '@/lib/kiosk/api';
 import { getCachedConfig, getDeviceToken, pendingCount } from '@/lib/kiosk/storage';
 import { iconFor } from '@/lib/icons';
@@ -57,7 +63,9 @@ export default function Session() {
   useEffect(() => {
     const interval = setInterval(() => {
       if (navigator.onLine) {
-        fetchKioskConfig().then(setConfig).catch(() => undefined);
+        fetchKioskConfig()
+          .then(setConfig)
+          .catch(() => undefined);
       }
       void pendingCount().then(setQueued);
     }, 120_000);
@@ -143,7 +151,7 @@ export default function Session() {
     advance([...answers, { questionId: question.id, optionId: option.id }], index);
   }
 
-  function skip(question: KioskQuestion, index: number) {
+  function skip(_question: KioskQuestion, index: number) {
     if (lockRef.current) return;
     lockRef.current = true;
     advance(answers, index);
@@ -169,7 +177,9 @@ export default function Session() {
   const offlineBanner = (offline || queued > 0) && (
     <p className="absolute top-3 right-3 flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs text-navy-100">
       <WifiOff className="size-3.5" aria-hidden />
-      {offline ? 'Hors ligne — vos réponses sont conservées' : `${queued} réponse(s) à synchroniser`}
+      {offline
+        ? 'Hors ligne — vos réponses sont conservées'
+        : `${queued} réponse(s) à synchroniser`}
     </p>
   );
 
@@ -185,7 +195,10 @@ export default function Session() {
         <p className="text-center text-lg font-semibold text-turquoise-300">
           {index + 1}/{questions.length}
         </p>
-        <div className="animate-step mx-auto flex w-full max-w-3xl flex-1 flex-col justify-center" key={`${phase.name}-${index}`}>
+        <div
+          className="animate-step mx-auto flex w-full max-w-3xl flex-1 flex-col justify-center"
+          key={`${phase.name}-${index}`}
+        >
           <h1 className="text-center text-3xl font-bold sm:text-4xl">{question.label}</h1>
 
           {phase.name === 'question' ? (
@@ -342,7 +355,9 @@ export default function Session() {
     return (
       <main className="kiosk-screen animate-step flex min-h-screen flex-col items-center justify-center bg-navy-900 px-6 text-center text-white">
         <h1 className="text-3xl font-bold">Scannez ce QR code avec votre téléphone</h1>
-        <p className="mt-2 text-navy-100">Vous serez redirigé vers la page d'avis de l'établissement.</p>
+        <p className="mt-2 text-navy-100">
+          Vous serez redirigé vers la page d'avis de l'établissement.
+        </p>
         {qrDataUrl && (
           <img
             src={qrDataUrl}

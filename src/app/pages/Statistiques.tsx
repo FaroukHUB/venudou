@@ -1,6 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useOrg } from '@/lib/org-context';
-import { fetchDevices, fetchReviewEvents, fetchRewardCodes, fetchSessions, periodFromPreset } from '../data';
+import {
+  fetchDevices,
+  fetchReviewEvents,
+  fetchRewardCodes,
+  fetchSessions,
+  periodFromPreset,
+} from '../data';
 import {
   applyFilters,
   countByDay,
@@ -23,8 +29,7 @@ const PERIODS = [
   { value: '90d', label: '90 derniers jours' },
 ];
 
-const selectClass =
-  'rounded-xl border border-navy-200 bg-white px-3 py-2 text-sm text-navy-800';
+const selectClass = 'rounded-xl border border-navy-200 bg-white px-3 py-2 text-sm text-navy-800';
 
 export default function Statistiques() {
   const { current, locations } = useOrg();
@@ -99,7 +104,8 @@ export default function Statistiques() {
         loc,
         count: locSessions.length,
         topSource: top?.label ?? '—',
-        scans: events.filter((e) => e.location_id === loc.id && e.event_type === 'link_opened').length,
+        scans: events.filter((e) => e.location_id === loc.id && e.event_type === 'link_opened')
+          .length,
         rewards: rewards.filter((r) => r.location_id === loc.id).length,
       };
     });
@@ -134,11 +140,19 @@ export default function Statistiques() {
 
   return (
     <div>
-      <PageHeader title="Statistiques" description="Analysez la provenance et le profil de vos clients, filtrez et comparez vos établissements." />
+      <PageHeader
+        title="Statistiques"
+        description="Analysez la provenance et le profil de vos clients, filtrez et comparez vos établissements."
+      />
 
       {/* Filtres */}
       <div className="mb-6 flex flex-wrap gap-2" role="group" aria-label="Filtres">
-        <select className={selectClass} aria-label="Période" value={preset} onChange={(e) => setPreset(e.target.value)}>
+        <select
+          className={selectClass}
+          aria-label="Période"
+          value={preset}
+          onChange={(e) => setPreset(e.target.value)}
+        >
           {PERIODS.map((p) => (
             <option key={p.value} value={p.value}>
               {p.label}
@@ -294,7 +308,11 @@ export default function Statistiques() {
             </table>
           </div>
           <div className="mt-4">
-            <TimeSeries data={analysis.comparisonByDay} series={analysis.comparisonSeries} height={280} />
+            <TimeSeries
+              data={analysis.comparisonByDay}
+              series={analysis.comparisonSeries}
+              height={280}
+            />
           </div>
           {locations.length > 3 && (
             <p className="mt-2 text-xs text-navy-400">

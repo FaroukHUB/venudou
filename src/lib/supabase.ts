@@ -7,9 +7,13 @@ export const isSupabaseConfigured = Boolean(url && anonKey);
 
 // Client unique, clé anon uniquement (protégée par RLS).
 // La clé service_role n'existe que côté Worker (secret Wrangler).
-export const supabase = createClient(url ?? 'http://localhost:54321', anonKey ?? 'anon-key-non-configuree', {
-  auth: {
-    persistSession: true,
-    autoRefreshToken: true,
+export const supabase = createClient(
+  url ?? 'http://localhost:54321',
+  anonKey ?? 'anon-key-non-configuree',
+  {
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true,
+    },
   },
-});
+);

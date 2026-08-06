@@ -8,13 +8,13 @@
 
 Une seule application, une seule base de données, cinq espaces :
 
-| Espace | Routes | Rendu | Indexation |
-| --- | --- | --- | --- |
-| Site commercial public | `/`, `/fonctionnalites`, `/tarifs`, `/restaurants`, … | **Pré-rendu statique** à la compilation (HTML complet dans la réponse initiale) | Indexable |
-| Authentification | `/connexion`, `/inscription`, `/mot-de-passe-oublie` | SPA React | `noindex` |
-| Tableau de bord client | `/app/*` | SPA React | `noindex` |
-| Kiosque tablette | `/kiosk`, `/kiosk/session` | SPA React + PWA + IndexedDB (hors ligne) | `noindex` |
-| Super-admin VenuD'où | `/super-admin/*` | SPA React | `noindex` |
+| Espace                 | Routes                                                | Rendu                                                                           | Indexation |
+| ---------------------- | ----------------------------------------------------- | ------------------------------------------------------------------------------- | ---------- |
+| Site commercial public | `/`, `/fonctionnalites`, `/tarifs`, `/restaurants`, … | **Pré-rendu statique** à la compilation (HTML complet dans la réponse initiale) | Indexable  |
+| Authentification       | `/connexion`, `/inscription`, `/mot-de-passe-oublie`  | SPA React                                                                       | `noindex`  |
+| Tableau de bord client | `/app/*`                                              | SPA React                                                                       | `noindex`  |
+| Kiosque tablette       | `/kiosk`, `/kiosk/session`                            | SPA React + PWA + IndexedDB (hors ligne)                                        | `noindex`  |
+| Super-admin VenuD'où   | `/super-admin/*`                                      | SPA React                                                                       | `noindex`  |
 
 Route serveur supplémentaire : `/r/:trackingCode` (suivi puis redirection vers
 le lien d'avis Google de l'établissement) et `/api/*` (endpoints du kiosque).
@@ -127,7 +127,7 @@ Le tirage est effectué **en base de données** dans une fonction SQL
 - la position n'est jamais exposée à l'avance ;
 - le gain crée un `reward_code` unique (affiché en QR code sur la tablette),
   utilisable une seule fois, avec statuts `available / redeemed / expired /
-  cancelled` ;
+cancelled` ;
 - le commerçant valide un code depuis `/app/recompenses` (RPC `redeem_reward_code`
   protégée par RLS).
 
@@ -196,4 +196,7 @@ e2e/               Playwright (parcours critiques)
 - **Tarifs du site public** : générés au build depuis la même source que le
   seed des plans ; la vérité runtime reste la table `plans` (éditable en
   super-admin).
+
+```
+
 ```

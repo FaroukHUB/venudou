@@ -104,7 +104,9 @@ export default function Equipe() {
               <div>
                 <p className="font-semibold text-navy-800">
                   {m.profile?.full_name || 'Utilisateur'}
-                  {m.user_id === user?.id && <span className="ml-2 text-xs text-navy-400">(vous)</span>}
+                  {m.user_id === user?.id && (
+                    <span className="ml-2 text-xs text-navy-400">(vous)</span>
+                  )}
                 </p>
                 <Badge tone={m.role === 'organization_owner' ? 'turquoise' : 'navy'}>
                   {ROLE_LABELS[m.role]}
@@ -144,7 +146,11 @@ export default function Equipe() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
-          <SelectField label="Rôle" value={role} onChange={(e) => setRole(e.target.value as OrgRole)}>
+          <SelectField
+            label="Rôle"
+            value={role}
+            onChange={(e) => setRole(e.target.value as OrgRole)}
+          >
             <option value="organization_admin">Administrateur</option>
             <option value="location_manager">Responsable d'établissement</option>
           </SelectField>

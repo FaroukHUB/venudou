@@ -41,7 +41,9 @@ export default function Etablissements() {
               {locations.map((l) => (
                 <tr key={l.id} className="border-b border-navy-50">
                   <td className="py-2.5 pr-4 font-semibold text-navy-800">{l.name}</td>
-                  <td className="py-2.5 pr-4">{orgs.find((o) => o.id === l.organization_id)?.name ?? '—'}</td>
+                  <td className="py-2.5 pr-4">
+                    {orgs.find((o) => o.id === l.organization_id)?.name ?? '—'}
+                  </td>
                   <td className="py-2.5 pr-4">{l.city || '—'}</td>
                   <td className="py-2.5 pr-4">
                     <Badge tone={l.status === 'active' ? 'green' : 'gray'}>

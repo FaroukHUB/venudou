@@ -109,7 +109,10 @@ export default function Recompenses() {
     }
     const res = data as { ok: boolean; error?: string; label?: string };
     if (res.ok) {
-      setRedeemResult({ ok: true, message: `Code valide — « ${res.label} ». Le gain est maintenant marqué comme utilisé.` });
+      setRedeemResult({
+        ok: true,
+        message: `Code valide — « ${res.label} ». Le gain est maintenant marqué comme utilisé.`,
+      });
       setCodeInput('');
     } else {
       const messages: Record<string, string> = {

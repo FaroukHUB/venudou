@@ -15,7 +15,9 @@ export default function Tablettes() {
       const [dRes, oRes, lRes] = await Promise.all([
         supabase
           .from('devices')
-          .select('id, organization_id, location_id, name, status, activated_at, last_seen_at, created_at')
+          .select(
+            'id, organization_id, location_id, name, status, activated_at, last_seen_at, created_at',
+          )
           .order('last_seen_at', { ascending: false, nullsFirst: false }),
         supabase.from('organizations').select('*'),
         supabase.from('locations').select('*'),
@@ -30,7 +32,10 @@ export default function Tablettes() {
 
   return (
     <div>
-      <PageHeader title="Tablettes" description="Toutes les tablettes actives et en attente d'activation." />
+      <PageHeader
+        title="Tablettes"
+        description="Toutes les tablettes actives et en attente d'activation."
+      />
       <Card>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
@@ -47,8 +52,12 @@ export default function Tablettes() {
               {devices.map((d) => (
                 <tr key={d.id} className="border-b border-navy-50">
                   <td className="py-2.5 pr-4 font-semibold text-navy-800">{d.name}</td>
-                  <td className="py-2.5 pr-4">{orgs.find((o) => o.id === d.organization_id)?.name ?? '—'}</td>
-                  <td className="py-2.5 pr-4">{locations.find((l) => l.id === d.location_id)?.name ?? '—'}</td>
+                  <td className="py-2.5 pr-4">
+                    {orgs.find((o) => o.id === d.organization_id)?.name ?? '—'}
+                  </td>
+                  <td className="py-2.5 pr-4">
+                    {locations.find((l) => l.id === d.location_id)?.name ?? '—'}
+                  </td>
                   <td className="py-2.5 pr-4">
                     {d.status === 'pending' && <Badge tone="gray">À activer</Badge>}
                     {d.status === 'disabled' && <Badge tone="red">Désactivée</Badge>}

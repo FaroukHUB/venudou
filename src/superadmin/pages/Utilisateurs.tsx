@@ -23,8 +23,14 @@ export default function Utilisateurs() {
   useEffect(() => {
     void (async () => {
       const [pRes, mRes] = await Promise.all([
-        supabase.from('profiles').select('id, full_name, created_at').order('created_at', { ascending: false }).limit(500),
-        supabase.from('organization_members').select('user_id, role, organization:organizations(name)'),
+        supabase
+          .from('profiles')
+          .select('id, full_name, created_at')
+          .order('created_at', { ascending: false })
+          .limit(500),
+        supabase
+          .from('organization_members')
+          .select('user_id, role, organization:organizations(name)'),
       ]);
       setProfiles((pRes.data ?? []) as ProfileRow[]);
       setMembers((mRes.data ?? []) as unknown as MemberRow[]);
@@ -50,7 +56,8 @@ export default function Utilisateurs() {
                   {orgs.length === 0 && <Badge tone="gray">Aucune organisation</Badge>}
                   {orgs.map((m, i) => (
                     <Badge key={i} tone={m.role === 'organization_owner' ? 'turquoise' : 'navy'}>
-                      {m.organization?.name} — {m.role.replace('organization_', '').replace('location_', '')}
+                      {m.organization?.name} —{' '}
+                      {m.role.replace('organization_', '').replace('location_', '')}
                     </Badge>
                   ))}
                 </div>

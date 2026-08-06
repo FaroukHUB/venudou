@@ -11,7 +11,13 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import { CHART_CATEGORICAL, CHART_GRID, CHART_SINGLE, CHART_TEXT, sequentialTurquoise } from './theme';
+import {
+  CHART_CATEGORICAL,
+  CHART_GRID,
+  CHART_SINGLE,
+  CHART_TEXT,
+  sequentialTurquoise,
+} from './theme';
 import type { CountRow } from '@/lib/stats';
 
 const axisStyle = { fontSize: 12, fill: CHART_TEXT };
@@ -26,7 +32,13 @@ export function DistributionBar({ data, height = 260 }: { data: CountRow[]; heig
         <XAxis type="number" tick={axisStyle} allowDecimals={false} />
         <YAxis type="category" dataKey="label" tick={axisStyle} width={130} />
         <Tooltip formatter={(v) => [String(v), 'Réponses']} />
-        <Bar dataKey="count" name="Réponses" fill={CHART_SINGLE} radius={[0, 4, 4, 0]} barSize={16} />
+        <Bar
+          dataKey="count"
+          name="Réponses"
+          fill={CHART_SINGLE}
+          radius={[0, 4, 4, 0]}
+          barSize={16}
+        />
       </BarChart>
     </ResponsiveContainer>
   );
@@ -57,7 +69,9 @@ export function TimeSeries({
             type="monotone"
             dataKey={s.key}
             name={s.label}
-            stroke={series.length === 1 ? CHART_SINGLE : CHART_CATEGORICAL[i % CHART_CATEGORICAL.length]}
+            stroke={
+              series.length === 1 ? CHART_SINGLE : CHART_CATEGORICAL[i % CHART_CATEGORICAL.length]
+            }
             strokeWidth={2}
             dot={false}
             activeDot={{ r: 4 }}
@@ -85,7 +99,14 @@ export function GroupedBars({
     <ResponsiveContainer width="100%" height={height}>
       <BarChart data={data} margin={{ left: 0, right: 16 }}>
         <CartesianGrid stroke={CHART_GRID} vertical={false} />
-        <XAxis dataKey={categoryKey} tick={axisStyle} interval={0} angle={-20} textAnchor="end" height={60} />
+        <XAxis
+          dataKey={categoryKey}
+          tick={axisStyle}
+          interval={0}
+          angle={-20}
+          textAnchor="end"
+          height={60}
+        />
         <YAxis tick={axisStyle} allowDecimals={false} width={36} />
         <Tooltip />
         <Legend wrapperStyle={{ fontSize: 12 }} />
@@ -116,7 +137,10 @@ export function DayHourHeatmap({ grid }: { grid: number[][] }) {
   const hours = [8, 10, 12, 14, 16, 18, 20, 22];
   return (
     <div className="overflow-x-auto">
-      <table className="border-separate border-spacing-0.5 text-xs" aria-label="Volume de réponses par jour et heure">
+      <table
+        className="border-separate border-spacing-0.5 text-xs"
+        aria-label="Volume de réponses par jour et heure"
+      >
         <thead>
           <tr>
             <th className="pr-1 text-left font-medium text-navy-400" scope="col">

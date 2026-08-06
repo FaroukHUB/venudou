@@ -2,7 +2,15 @@ import type { ReactNode } from 'react';
 import { Link } from 'react-router';
 import { Logo } from '@/components/ui/Logo';
 
-export function AuthShell({ title, children, footer }: { title: string; children: ReactNode; footer?: ReactNode }) {
+export function AuthShell({
+  title,
+  children,
+  footer,
+}: {
+  title: string;
+  children: ReactNode;
+  footer?: ReactNode;
+}) {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-surface-muted px-4 py-10">
       <Link to="/" className="mb-8" aria-label="Retour à l'accueil VenuD'où">

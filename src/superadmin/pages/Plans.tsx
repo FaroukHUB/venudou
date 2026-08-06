@@ -71,7 +71,10 @@ export default function Plans() {
         description="Prix et limites des offres commerciales — la source de vérité pour tout le produit."
       />
       {message && (
-        <p className="mb-4 rounded-xl bg-turquoise-50 px-4 py-2 text-sm text-turquoise-800" role="status">
+        <p
+          className="mb-4 rounded-xl bg-turquoise-50 px-4 py-2 text-sm text-turquoise-800"
+          role="status"
+        >
           {message}
         </p>
       )}

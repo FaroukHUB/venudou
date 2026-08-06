@@ -53,7 +53,11 @@ export function countByKind(sessions: SessionLite[], kind: string): CountRow[] {
   for (const s of sessions) {
     const a = answerOf(s, kind);
     if (!a || !a.option_value) continue;
-    const row = map.get(a.option_value) ?? { value: a.option_value, label: a.option_label, count: 0 };
+    const row = map.get(a.option_value) ?? {
+      value: a.option_value,
+      label: a.option_label,
+      count: 0,
+    };
     row.count += 1;
     map.set(a.option_value, row);
   }
@@ -86,7 +90,11 @@ export function crossTab(
     const ansA = answerOf(s, kindA);
     const ansB = answerOf(s, kindB);
     if (!ansA?.option_value || !ansB?.option_value) continue;
-    const row = map.get(ansA.option_value) ?? { a: ansA.option_value, aLabel: ansA.option_label, byB: {} };
+    const row = map.get(ansA.option_value) ?? {
+      a: ansA.option_value,
+      aLabel: ansA.option_label,
+      byB: {},
+    };
     row.byB[ansB.option_value] = (row.byB[ansB.option_value] ?? 0) + 1;
     map.set(ansA.option_value, row);
   }

@@ -140,7 +140,9 @@ export default function Organisations() {
                   <tr key={org.id} className="border-b border-navy-50 align-top">
                     <td className="py-3 pr-4">
                       <p className="font-semibold text-navy-800">{org.name}</p>
-                      {org.status === 'suspended' && <Badge tone="red">Organisation suspendue</Badge>}
+                      {org.status === 'suspended' && (
+                        <Badge tone="red">Organisation suspendue</Badge>
+                      )}
                     </td>
                     <td className="py-3 pr-4">
                       {org.subscription?.plan?.name ?? '—'}

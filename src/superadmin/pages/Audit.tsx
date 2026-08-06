@@ -12,7 +12,11 @@ export default function Audit() {
   useEffect(() => {
     void (async () => {
       const [lRes, oRes] = await Promise.all([
-        supabase.from('audit_logs').select('*').order('created_at', { ascending: false }).limit(200),
+        supabase
+          .from('audit_logs')
+          .select('*')
+          .order('created_at', { ascending: false })
+          .limit(200),
         supabase.from('organizations').select('*'),
       ]);
       setLogs((lRes.data ?? []) as AuditLog[]);

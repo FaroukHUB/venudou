@@ -37,7 +37,9 @@ function normalize(input: string): string {
 
 export class LocalAssistantProvider implements AssistantProvider {
   async ask(question: string): Promise<AssistantAnswer> {
-    const terms = normalize(question).split(/[^a-z0-9]+/).filter(Boolean);
+    const terms = normalize(question)
+      .split(/[^a-z0-9]+/)
+      .filter(Boolean);
     const ranked = HELP_ARTICLES.map((a) => ({ a, s: score(a, terms) }))
       .filter((r) => r.s > 0)
       .sort((x, y) => y.s - x.s)
@@ -57,7 +59,9 @@ export class LocalAssistantProvider implements AssistantProvider {
 }
 
 export function searchArticles(query: string): HelpArticle[] {
-  const terms = normalize(query).split(/[^a-z0-9]+/).filter(Boolean);
+  const terms = normalize(query)
+    .split(/[^a-z0-9]+/)
+    .filter(Boolean);
   if (terms.length === 0) return HELP_ARTICLES;
   return HELP_ARTICLES.map((a) => ({ a, s: score(a, terms) }))
     .filter((r) => r.s > 0)

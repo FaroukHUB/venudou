@@ -8,11 +8,11 @@
     "directory": "./dist/client",
     "binding": "ASSETS",
     // Les routes sans asset statique (SPA privée, /api, /r) tombent sur le Worker.
-    "not_found_handling": "none"
+    "not_found_handling": "none",
   },
   "observability": {
-    "enabled": true
-  }
+    "enabled": true,
+  },
   // Secrets (jamais ici, jamais dans Git) :
   //   wrangler secret put SUPABASE_URL
   //   wrangler secret put SUPABASE_SERVICE_ROLE_KEY
