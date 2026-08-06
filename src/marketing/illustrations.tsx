@@ -258,7 +258,7 @@ export function Photo({
       height={800}
       loading="lazy"
       decoding="async"
-      className={`lift w-full rounded-3xl object-cover shadow-xl ${className}`}
+      className={`lift aspect-[3/2] w-full rounded-3xl object-cover shadow-xl ${className}`}
     />
   );
 }
