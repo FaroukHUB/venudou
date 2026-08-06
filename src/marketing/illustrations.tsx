@@ -235,3 +235,30 @@ export function StoresMockup() {
     </div>
   );
 }
+
+/**
+ * Photo d'ambiance auto-hébergée (public/images/), 3:2, optimisée.
+ * Dimensions explicites pour éviter tout décalage de mise en page ;
+ * chargement différé car toujours sous la ligne de flottaison.
+ */
+export function Photo({
+  src,
+  alt,
+  className = '',
+}: {
+  src: string;
+  alt: string;
+  className?: string;
+}) {
+  return (
+    <img
+      src={src}
+      alt={alt}
+      width={1200}
+      height={800}
+      loading="lazy"
+      decoding="async"
+      className={`lift w-full rounded-3xl object-cover shadow-xl ${className}`}
+    />
+  );
+}

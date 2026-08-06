@@ -1,6 +1,6 @@
 import { PageShell, PageHero } from '../PageShell';
 import { CheckList, CtaBanner, FaqList, Section } from '../components';
-import { DashboardMockup, StoresMockup } from '../illustrations';
+import { DashboardMockup, Photo, StoresMockup } from '../illustrations';
 
 /** Pages sectorielles : restaurants, magasins, multi-établissements. */
 
@@ -38,7 +38,14 @@ export function Restaurants() {
           </div>
         </div>
       </Section>
-      <Section title="Questions fréquentes des restaurateurs" muted>
+      <Section muted>
+        <Photo
+          src="/images/restaurant-tablette.webp"
+          alt="Tablette VenuD'où sur le comptoir d'un restaurant, une cliente répond au questionnaire"
+          className="mx-auto max-w-3xl"
+        />
+      </Section>
+      <Section title="Questions fréquentes des restaurateurs">
         <FaqList
           items={[
             {
@@ -94,7 +101,11 @@ export function Magasins() {
             </p>
           </div>
         </div>
-        <div className="mx-auto mt-12 max-w-xl">
+        <div className="mx-auto mt-12 grid max-w-4xl items-center gap-8 lg:grid-cols-2">
+          <Photo
+            src="/images/boutique-tablette.webp"
+            alt="Tablette VenuD'où à la caisse d'une boutique, la commerçante remet son achat à une cliente"
+          />
           <DashboardMockup />
         </div>
       </Section>

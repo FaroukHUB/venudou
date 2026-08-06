@@ -1,7 +1,7 @@
 import { BarChart3, Gift, MessagesSquare, Star, Tablet, Users } from 'lucide-react';
 import { PageShell } from '../PageShell';
 import { CheckList, CtaBanner, FaqList, FeatureCard, KioskDemo, Section } from '../components';
-import { Blobs, DashboardMockup, HeroTablet, StoresMockup } from '../illustrations';
+import { Blobs, DashboardMockup, HeroTablet, Photo, StoresMockup } from '../illustrations';
 import { FAQ_ITEMS } from '../content/faq';
 import { PricingGrid } from './Tarifs';
 
@@ -121,6 +121,29 @@ export default function Home() {
             </li>
           ))}
         </ol>
+      </Section>
+
+      <Section>
+        <div className="grid gap-6 md:grid-cols-2">
+          <figure>
+            <Photo
+              src="/images/restaurant-tablette.webp"
+              alt="Tablette VenuD'où sur le comptoir d'un restaurant, une cliente répond au questionnaire"
+            />
+            <figcaption className="mt-2 text-center text-sm text-navy-500">
+              Au restaurant : trois questions pendant l'encaissement
+            </figcaption>
+          </figure>
+          <figure>
+            <Photo
+              src="/images/boutique-tablette.webp"
+              alt="Tablette VenuD'où à la caisse d'une boutique de prêt-à-porter"
+            />
+            <figcaption className="mt-2 text-center text-sm text-navy-500">
+              En boutique : la provenance mesurée à chaque passage en caisse
+            </figcaption>
+          </figure>
+        </div>
       </Section>
 
       <Section
