@@ -1,0 +1,90 @@
+@import 'tailwindcss';
+
+/*
+ * Charte VenuD'où — tokens de couleurs.
+ * Bleu marine + turquoise principaux, blanc / gris très clair en fond,
+ * violet UNIQUEMENT en couleur secondaire (statistiques, catégories).
+ * Modifier ici pour rebrander toute l'application.
+ */
+@theme {
+  --font-sans:
+    'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue',
+    Arial, sans-serif;
+
+  /* Bleu marine (principal) */
+  --color-navy-50: #eef3f9;
+  --color-navy-100: #d8e3f0;
+  --color-navy-200: #b0c5e0;
+  --color-navy-300: #7f9fc7;
+  --color-navy-400: #4f77a8;
+  --color-navy-500: #2c5484;
+  --color-navy-600: #1d3f68;
+  --color-navy-700: #16324f;
+  --color-navy-800: #122b4a;
+  --color-navy-900: #0d2036;
+  --color-navy-950: #081525;
+
+  /* Turquoise (principal) */
+  --color-turquoise-50: #effcfa;
+  --color-turquoise-100: #c8f5ef;
+  --color-turquoise-200: #92ebe1;
+  --color-turquoise-300: #57d9cd;
+  --color-turquoise-400: #2ac0b5;
+  --color-turquoise-500: #14a49b;
+  --color-turquoise-600: #0d847e;
+  --color-turquoise-700: #0e6a66;
+  --color-turquoise-800: #105452;
+  --color-turquoise-900: #114645;
+  --color-turquoise-950: #03302f;
+
+  /* Violet — couleur SECONDAIRE uniquement (stats, catégories) */
+  --color-violet-50: #f4f1fb;
+  --color-violet-100: #e6e0f6;
+  --color-violet-300: #b3a2e4;
+  --color-violet-500: #7c5fc9;
+  --color-violet-600: #6647b3;
+  --color-violet-700: #533a92;
+
+  /* Fonds et surfaces */
+  --color-surface: #ffffff;
+  --color-surface-muted: #f5f7fa; /* gris très clair */
+  --color-surface-strong: #eceff4;
+
+  --radius-card: 1rem;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-surface-muted font-sans text-navy-900 antialiased;
+}
+
+/* Focus visible accessible partout */
+:focus-visible {
+  outline: 3px solid var(--color-turquoise-400);
+  outline-offset: 2px;
+}
+
+/* Kiosque : neutraliser sélection / zoom double-tap */
+.kiosk-screen {
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+@keyframes fade-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-step {
+  animation: fade-slide-in 220ms ease-out;
+}

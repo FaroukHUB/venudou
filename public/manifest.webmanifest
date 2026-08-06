@@ -1,0 +1,26 @@
+{
+  "name": "VenuD'où",
+  "short_name": "VenuD'où",
+  "description": "Comprenez d'où viennent vos clients.",
+  "lang": "fr",
+  "start_url": "/kiosk",
+  "scope": "/",
+  "display": "fullscreen",
+  "orientation": "any",
+  "background_color": "#F5F7FA",
+  "theme_color": "#122B4A",
+  "icons": [
+    {
+      "src": "/icons/pwa-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/pwa-icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}

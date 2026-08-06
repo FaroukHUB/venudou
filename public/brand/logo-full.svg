@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 48" role="img" aria-label="VenuD'où">
+  <!-- PLACEHOLDER — remplacer par le logo complet validé -->
+  <rect x="2" y="6" width="36" height="36" rx="10" fill="#122B4A"/>
+  <path d="M12 17l8 15 8-15" fill="none" stroke="#2AC0B5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="48" y="32" font-family="Inter, system-ui, sans-serif" font-size="21" font-weight="700" fill="#122B4A">VenuD&#8217;o&#249;</text>
+</svg>

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- PLACEHOLDER icône PWA — remplacer par l'icône validée (prévoir aussi des PNG 192/512) -->
+  <rect width="512" height="512" rx="96" fill="#122B4A"/>
+  <path d="M150 160l106 200 106-200" fill="none" stroke="#2AC0B5" stroke-width="52" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

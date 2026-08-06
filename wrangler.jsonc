@@ -1,0 +1,20 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "venudou",
+  "main": "worker/index.ts",
+  "compatibility_date": "2025-07-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "./dist/client",
+    "binding": "ASSETS",
+    // Les routes sans asset statique (SPA privée, /api, /r) tombent sur le Worker.
+    "not_found_handling": "none"
+  },
+  "observability": {
+    "enabled": true
+  }
+  // Secrets (jamais ici, jamais dans Git) :
+  //   wrangler secret put SUPABASE_URL
+  //   wrangler secret put SUPABASE_SERVICE_ROLE_KEY
+  //   wrangler secret put PUBLIC_BASE_URL   (ou var ci-dessous une fois le domaine connu)
+}
