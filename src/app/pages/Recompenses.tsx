@@ -39,6 +39,7 @@ export default function Recompenses() {
   const [campaigns, setCampaigns] = useState<RewardCampaign[] | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [form, setForm] = useState(emptyForm);
+  const [editing, setEditing] = useState<RewardCampaign | null>(null);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   // Validation de code
@@ -61,13 +62,38 @@ export default function Recompenses() {
 
   useEffect(load, [load]);
 
-  async function createCampaign(e: FormEvent) {
+  function openCreate() {
+    setEditing(null);
+    setForm(emptyForm);
+    setError(null);
+    setModalOpen(true);
+  }
+
+  function openEdit(c: RewardCampaign) {
+    setEditing(c);
+    setForm({
+      name: c.name,
+      location_id: c.location_id,
+      reward_type: c.reward_type,
+      reward_value: c.reward_value?.toString() ?? '',
+      reward_label: c.reward_label,
+      frequency_n: c.frequency_n.toString(),
+      max_discount: c.max_discount_cents ? (c.max_discount_cents / 100).toString() : '',
+      min_order: c.min_order_cents ? (c.min_order_cents / 100).toString() : '',
+      validity_days: c.validity_days.toString(),
+      terms: c.terms,
+      max_total_wins: c.max_total_wins?.toString() ?? '',
+    });
+    setError(null);
+    setModalOpen(true);
+  }
+
+  async function saveCampaign(e: FormEvent) {
     e.preventDefault();
     if (!orgId) return;
     setSaving(true);
     setError(null);
-    const { error: err } = await supabase.from('reward_campaigns').insert({
-      organization_id: orgId,
+    const payload = {
       location_id: form.location_id,
       name: form.name,
       reward_type: form.reward_type,
@@ -79,13 +105,17 @@ export default function Recompenses() {
       validity_days: Math.max(1, Number(form.validity_days) || 30),
       terms: form.terms,
       max_total_wins: form.max_total_wins ? Number(form.max_total_wins) : null,
-    });
+    };
+    const { error: err } = editing
+      ? await supabase.from('reward_campaigns').update(payload).eq('id', editing.id)
+      : await supabase.from('reward_campaigns').insert({ organization_id: orgId, ...payload });
     setSaving(false);
     if (err) {
       setError(err.message);
       return;
     }
     setModalOpen(false);
+    setEditing(null);
     setForm(emptyForm);
     load();
   }
@@ -134,7 +164,7 @@ export default function Recompenses() {
         title="Récompenses — Instant gagnant"
         description="Fonction facultative : 1 gagnant toutes les N participations, tiré de manière sécurisée et aléatoire. La récompense concerne uniquement la participation au questionnaire, jamais la publication d'un avis."
         actions={
-          <Button onClick={() => setModalOpen(true)} disabled={locations.length === 0}>
+          <Button onClick={openCreate} disabled={locations.length === 0}>
             <Plus className="size-4" aria-hidden /> Nouvelle campagne
           </Button>
         }
@@ -215,14 +245,23 @@ export default function Recompenses() {
                 )}
                 {!c.is_active && <Badge tone="gray">Désactivée</Badge>}
               </div>
-              <p className="mt-2 text-xs text-navy-400">Créée le {formatDate(c.created_at)}</p>
+              <div className="mt-3 flex items-center justify-between">
+                <p className="text-xs text-navy-400">Créée le {formatDate(c.created_at)}</p>
+                <Button variant="ghost" size="sm" onClick={() => openEdit(c)}>
+                  Modifier
+                </Button>
+              </div>
             </Card>
           ))}
         </div>
       )}
 
-      <Modal open={modalOpen} onClose={() => setModalOpen(false)} title="Nouvelle campagne">
-        <form onSubmit={createCampaign} className="space-y-4">
+      <Modal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        title={editing ? `Modifier « ${editing.name} »` : 'Nouvelle campagne'}
+      >
+        <form onSubmit={saveCampaign} className="space-y-4">
           <InputField
             label="Nom de la campagne"
             required
@@ -321,7 +360,7 @@ export default function Recompenses() {
             </p>
           )}
           <Button type="submit" loading={saving} className="w-full">
-            Créer la campagne
+            {editing ? 'Enregistrer les modifications' : 'Créer la campagne'}
           </Button>
         </form>
       </Modal>
