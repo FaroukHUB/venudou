@@ -1,0 +1,15 @@
+# ============================================================
+# VenuD'où — Secrets du Worker Cloudflare (développement local)
+# Copier vers .dev.vars (jamais commité).
+# En production : `wrangler secret put <NOM>` — jamais dans wrangler.jsonc.
+# ============================================================
+
+# URL du projet Supabase
+SUPABASE_URL=https://VOTRE-PROJET.supabase.co
+
+# Clé service_role Supabase — SECRÈTE, uniquement côté Worker.
+# Elle contourne la RLS : ne jamais l'exposer au navigateur.
+SUPABASE_SERVICE_ROLE_KEY=votre-cle-service-role
+
+# URL publique du site (redirections /r/:code, liens absolus)
+PUBLIC_BASE_URL=http://localhost:5173
