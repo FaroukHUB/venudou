@@ -40,7 +40,7 @@ export function Restaurants() {
       </Section>
       <Section muted>
         <Photo
-          src="/images/restaurant-tablette.webp"
+          src="/images/restaurant-tablette.jpg"
           alt="Tablette VenuD'où sur le comptoir d'un restaurant, une cliente répond au questionnaire"
           className="mx-auto max-w-3xl"
         />
@@ -103,7 +103,7 @@ export function Magasins() {
         </div>
         <div className="mx-auto mt-12 grid max-w-4xl items-center gap-8 lg:grid-cols-2">
           <Photo
-            src="/images/boutique-tablette.webp"
+            src="/images/boutique-tablette.jpg"
             alt="Tablette VenuD'où à la caisse d'une boutique, la commerçante remet son achat à une cliente"
           />
           <DashboardMockup />

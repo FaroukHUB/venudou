@@ -127,7 +127,7 @@ export default function Home() {
         <div className="grid gap-6 md:grid-cols-2">
           <figure>
             <Photo
-              src="/images/restaurant-tablette.webp"
+              src="/images/restaurant-tablette.jpg"
               alt="Tablette VenuD'où sur le comptoir d'un restaurant, une cliente répond au questionnaire"
             />
             <figcaption className="mt-2 text-center text-sm text-navy-500">
@@ -136,7 +136,7 @@ export default function Home() {
           </figure>
           <figure>
             <Photo
-              src="/images/boutique-tablette.webp"
+              src="/images/boutique-tablette.jpg"
               alt="Tablette VenuD'où à la caisse d'une boutique de prêt-à-porter"
             />
             <figcaption className="mt-2 text-center text-sm text-navy-500">
