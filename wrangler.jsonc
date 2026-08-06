@@ -13,6 +13,12 @@
   "observability": {
     "enabled": true,
   },
+  // Domaine officiel (acheté chez Cloudflare, même compte) :
+  // wrangler rattache automatiquement ces domaines au Worker au déploiement.
+  "routes": [
+    { "pattern": "venudou.com", "custom_domain": true },
+    { "pattern": "www.venudou.com", "custom_domain": true },
+  ],
   // Secrets (jamais ici, jamais dans Git) :
   //   wrangler secret put SUPABASE_URL
   //   wrangler secret put SUPABASE_SERVICE_ROLE_KEY
