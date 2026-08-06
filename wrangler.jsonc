@@ -13,6 +13,8 @@
   "observability": {
     "enabled": true,
   },
+  // Adresse de secours *.workers.dev maintenue active (utile pour tester).
+  "workers_dev": true,
   // Domaine officiel (acheté chez Cloudflare, même compte) :
   // wrangler rattache automatiquement ces domaines au Worker au déploiement.
   "routes": [
