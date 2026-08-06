@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
-import { ArrowDown, ArrowUp, Eye, Plus, Send, Trash2 } from 'lucide-react';
+import { ArrowDown, ArrowUp, Eye, Palette, Plus, Send, Trash2 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { useOrg } from '@/lib/org-context';
 import { iconFor, OPTION_ICONS } from '@/lib/icons';
-import type { Question, QuestionOption, Questionnaire } from '@/lib/types';
+import { brandIconFor } from '@/lib/brand-icons';
+import type { KioskTheme, Question, QuestionOption, Questionnaire } from '@/lib/types';
 import { PageHeader, Spinner, Badge, Toggle, ErrorState } from '@/components/ui/misc';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
@@ -16,9 +17,13 @@ interface FullQuestion extends Question {
 }
 
 export default function QuestionnairePage() {
-  const { locations } = useOrg();
+  const { locations, current } = useOrg();
   const [locationId, setLocationId] = useState('');
   const [questionnaire, setQuestionnaire] = useState<Questionnaire | null>(null);
+  const [theme, setTheme] = useState<KioskTheme>({});
+  const [themeSaving, setThemeSaving] = useState(false);
+  const [themeMessage, setThemeMessage] = useState<string | null>(null);
+  const [logoUploading, setLogoUploading] = useState(false);
   const [questions, setQuestions] = useState<FullQuestion[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [publishing, setPublishing] = useState(false);
@@ -45,6 +50,7 @@ export default function QuestionnairePage() {
       return;
     }
     setQuestionnaire(qn as Questionnaire);
+    setTheme(((qn as Questionnaire).theme ?? {}) as KioskTheme);
     const { data: qs, error: e2 } = await supabase
       .from('questions')
       .select('*, options:question_options(*)')
@@ -124,6 +130,42 @@ export default function QuestionnairePage() {
     else await load();
   }
 
+  async function saveTheme(next: KioskTheme) {
+    if (!questionnaire) return;
+    setThemeSaving(true);
+    setThemeMessage(null);
+    const { error: err } = await supabase
+      .from('questionnaires')
+      .update({ theme: next })
+      .eq('id', questionnaire.id);
+    setThemeSaving(false);
+    setThemeMessage(err ? err.message : 'Apparence enregistrée — pensez à publier.');
+    if (!err) setTheme(next);
+  }
+
+  async function uploadLogo(file: File) {
+    if (!questionnaire || !current) return;
+    if (file.size > 1024 * 1024) {
+      setThemeMessage('Le logo doit faire moins de 1 Mo.');
+      return;
+    }
+    setLogoUploading(true);
+    setThemeMessage(null);
+    const ext = file.name.split('.').pop()?.toLowerCase() ?? 'png';
+    const path = `${current.organization.id}/${questionnaire.location_id}-${Date.now()}.${ext}`;
+    const { error: err } = await supabase.storage
+      .from('brand-logos')
+      .upload(path, file, { upsert: true, cacheControl: '3600' });
+    if (err) {
+      setThemeMessage(`Envoi du logo impossible : ${err.message}`);
+      setLogoUploading(false);
+      return;
+    }
+    const { data } = supabase.storage.from('brand-logos').getPublicUrl(path);
+    setLogoUploading(false);
+    await saveTheme({ ...theme, logoUrl: data.publicUrl });
+  }
+
   async function publish() {
     if (!questionnaire) return;
     setPublishing(true);
@@ -182,6 +224,96 @@ export default function QuestionnairePage() {
           Dernière publication : {formatDateTime(questionnaire.published_at)} — les tablettes
           récupèrent la nouvelle version automatiquement.
         </p>
+      )}
+      {questionnaire && (
+        <Card className="mb-5">
+          <div className="mb-3 flex items-center gap-2">
+            <Palette className="size-5 text-turquoise-600" aria-hidden />
+            <h2 className="text-lg font-bold text-navy-900">Apparence de la tablette</h2>
+          </div>
+          <div className="flex flex-wrap items-end gap-5">
+            <label className="text-sm font-semibold text-navy-800">
+              Couleur de fond
+              <span className="mt-1.5 flex items-center gap-2">
+                <input
+                  type="color"
+                  value={theme.backgroundColor ?? '#142c52'}
+                  onChange={(e) => setTheme({ ...theme, backgroundColor: e.target.value })}
+                  aria-label="Couleur de fond du questionnaire"
+                  className="h-10 w-16 cursor-pointer rounded-lg border border-navy-200 bg-white"
+                />
+                <button
+                  type="button"
+                  className="text-xs font-medium text-navy-400 hover:underline"
+                  onClick={() => setTheme({ ...theme, backgroundColor: undefined })}
+                >
+                  Réinitialiser
+                </button>
+              </span>
+            </label>
+            <label className="text-sm font-semibold text-navy-800">
+              Forme des boutons
+              <select
+                className="mt-1.5 block rounded-xl border border-navy-200 bg-white px-3 py-2 text-sm font-normal"
+                value={theme.buttonShape ?? 'rounded'}
+                onChange={(e) =>
+                  setTheme({ ...theme, buttonShape: e.target.value as 'rounded' | 'round' })
+                }
+              >
+                <option value="rounded">Coins arrondis</option>
+                <option value="round">Complètement ronds</option>
+              </select>
+            </label>
+            <label className="text-sm font-semibold text-navy-800">
+              Logo de l'établissement
+              <span className="mt-1.5 flex items-center gap-3">
+                {theme.logoUrl && (
+                  <img
+                    src={theme.logoUrl}
+                    alt="Logo actuel"
+                    className="h-10 w-auto max-w-28 rounded-lg border border-navy-100 bg-white object-contain p-1"
+                  />
+                )}
+                <input
+                  type="file"
+                  accept="image/png,image/jpeg,image/svg+xml,image/webp"
+                  aria-label="Importer le logo"
+                  className="text-xs font-normal text-navy-500 file:mr-2 file:rounded-lg file:border-0 file:bg-navy-50 file:px-3 file:py-2 file:text-xs file:font-semibold file:text-navy-700"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) void uploadLogo(file);
+                  }}
+                />
+                {theme.logoUrl && (
+                  <button
+                    type="button"
+                    className="text-xs font-medium text-red-500 hover:underline"
+                    onClick={() => void saveTheme({ ...theme, logoUrl: null })}
+                  >
+                    Retirer
+                  </button>
+                )}
+              </span>
+            </label>
+            <Button
+              size="sm"
+              loading={themeSaving || logoUploading}
+              onClick={() => void saveTheme(theme)}
+            >
+              Enregistrer l'apparence
+            </Button>
+          </div>
+          <p className="mt-2 text-xs text-navy-400">
+            Les icônes des réseaux (Facebook, Instagram, TikTok, Snapchat, Google…) s'affichent
+            automatiquement dans leur style officiel, en pastilles rondes. PNG/JPG/SVG, 1 Mo max
+            pour le logo.
+          </p>
+          {themeMessage && (
+            <p className="mt-2 text-sm font-medium text-navy-600" role="status">
+              {themeMessage}
+            </p>
+          )}
+        </Card>
       )}
       {error && <ErrorState message={error} onRetry={() => void load()} />}
       {!questions && !error && <Spinner />}
@@ -248,7 +380,8 @@ export default function QuestionnairePage() {
               />
               <ul className="mt-3 space-y-1.5">
                 {q.options.map((o, oi) => {
-                  const Icon = iconFor(o.icon);
+                  const Brand = brandIconFor(o.value, o.icon);
+                  const Icon = Brand ? null : iconFor(o.icon);
                   return (
                     <li
                       key={o.id}
@@ -260,7 +393,13 @@ export default function QuestionnairePage() {
                         onClick={() => setIconPicker(o)}
                         title="Choisir une icône"
                       >
-                        {Icon ? <Icon className="size-4" /> : <span className="block size-4" />}
+                        {Brand ? (
+                          <Brand className="size-4 rounded-full" />
+                        ) : Icon ? (
+                          <Icon className="size-4" />
+                        ) : (
+                          <span className="block size-4" />
+                        )}
                       </button>
                       <input
                         className="flex-1 rounded-lg border border-transparent bg-transparent px-2 py-1 text-sm font-medium text-navy-800 hover:border-navy-200 focus:border-turquoise-500"
@@ -332,7 +471,13 @@ export default function QuestionnairePage() {
           {questions
             ?.filter((q) => q.enabled)
             .map((q, i, arr) => (
-              <div key={q.id} className="rounded-2xl bg-navy-800 p-4 text-white">
+              <div
+                key={q.id}
+                className="rounded-2xl bg-navy-800 p-4 text-white"
+                style={
+                  theme.backgroundColor ? { backgroundColor: theme.backgroundColor } : undefined
+                }
+              >
                 <p className="text-xs text-navy-200">
                   {i + 1}/{arr.length}
                 </p>
@@ -341,12 +486,18 @@ export default function QuestionnairePage() {
                   {q.options
                     .filter((o) => o.enabled)
                     .map((o) => {
-                      const Icon = iconFor(o.icon);
+                      const Brand = brandIconFor(o.value, o.icon);
+                      const Icon = Brand ? null : iconFor(o.icon);
                       return (
                         <span
                           key={o.id}
-                          className="flex items-center gap-2 rounded-xl bg-white/10 px-3 py-2.5 text-sm font-semibold"
+                          className={`flex items-center gap-2 bg-white/10 px-3 py-2.5 text-sm font-semibold ${theme.buttonShape === 'round' ? 'rounded-full' : 'rounded-xl'}`}
                         >
+                          {Brand && (
+                            <span className="flex size-6 items-center justify-center overflow-hidden rounded-full bg-white">
+                              <Brand className="size-4" />
+                            </span>
+                          )}
                           {Icon && <Icon className="size-4" aria-hidden />}
                           {o.label}
                         </span>

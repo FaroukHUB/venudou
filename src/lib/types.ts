@@ -93,6 +93,12 @@ export interface QuestionOption {
   is_other: boolean;
 }
 
+export interface KioskTheme {
+  backgroundColor?: string;
+  buttonShape?: 'rounded' | 'round';
+  logoUrl?: string | null;
+}
+
 export interface Questionnaire {
   id: string;
   organization_id: string;
@@ -100,6 +106,7 @@ export interface Questionnaire {
   title: string;
   is_active: boolean;
   published_at: string | null;
+  theme: KioskTheme;
 }
 
 export interface SurveySession {
@@ -220,6 +227,7 @@ export interface KioskConfig {
     id: string;
     title: string;
     publishedAt: string | null;
+    theme?: KioskTheme;
     questions: KioskQuestion[];
   };
   review: { active: boolean; trackingCode?: string };

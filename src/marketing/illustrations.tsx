@@ -1,4 +1,5 @@
-import { Gift, MessagesSquare, Search, Star, TrendingUp } from 'lucide-react';
+import { Gift, MessagesSquare, MoreHorizontal, Search, Star, TrendingUp } from 'lucide-react';
+import { BRAND_ICONS } from '@/lib/brand-icons';
 
 /**
  * Illustrations du site public — 100 % HTML/SVG/CSS, aux couleurs de la
@@ -52,18 +53,34 @@ export function HeroTablet() {
             Comment avez-vous connu notre établissement ?
           </p>
           <div className="mt-5 grid grid-cols-2 gap-2.5">
-            {['Facebook', 'Instagram', 'TikTok', 'Google', 'Bouche-à-oreille', 'Autre'].map(
-              (label, i) => (
-                <span
-                  key={label}
-                  className={`rounded-xl px-2 py-3 text-center text-xs font-semibold ${
-                    i === 1 ? 'bg-turquoise-500 text-white' : 'bg-white/10 text-white'
-                  }`}
-                >
-                  {label}
-                </span>
-              ),
-            )}
+            {(
+              [
+                ['Facebook', BRAND_ICONS.facebook],
+                ['Instagram', BRAND_ICONS.instagram],
+                ['TikTok', BRAND_ICONS.tiktok],
+                ['Google', BRAND_ICONS.google],
+                ['Bouche-à-oreille', null],
+                ['Autre', null],
+              ] as const
+            ).map(([label, Brand], i) => (
+              <span
+                key={label}
+                className={`flex items-center justify-center gap-1.5 rounded-xl px-2 py-3 text-center text-xs font-semibold ${
+                  i === 1 ? 'bg-turquoise-500 text-white' : 'bg-white/10 text-white'
+                }`}
+              >
+                {Brand ? (
+                  <span className="flex size-5 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white">
+                    <Brand className="size-4" />
+                  </span>
+                ) : label === 'Autre' ? (
+                  <MoreHorizontal className="size-4 shrink-0" aria-hidden />
+                ) : (
+                  <MessagesSquare className="size-4 shrink-0" aria-hidden />
+                )}
+                {label}
+              </span>
+            ))}
           </div>
           <p className="mt-4 text-center text-[10px] text-navy-300">
             Appuyez pour répondre — 15 secondes

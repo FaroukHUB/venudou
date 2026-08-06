@@ -1,17 +1,7 @@
 import type { ReactNode } from 'react';
-import {
-  Check,
-  EyeOff,
-  Facebook,
-  Instagram,
-  MessagesSquare,
-  MoreHorizontal,
-  Music2,
-  Search,
-  User,
-  type LucideIcon,
-} from 'lucide-react';
+import { Check, EyeOff, MessagesSquare, MoreHorizontal, User, type LucideIcon } from 'lucide-react';
 import { SITE, type PageMeta } from './seo';
+import { BRAND_ICONS, type BrandIconProps } from '@/lib/brand-icons';
 import type { FaqItem } from './content/faq';
 
 /**
@@ -318,17 +308,22 @@ export function KioskDemo() {
   const steps: {
     step: string;
     question: string;
-    options: { label: string; icon?: LucideIcon; highlight?: boolean }[];
+    options: {
+      label: string;
+      icon?: LucideIcon;
+      brand?: (p: BrandIconProps) => React.JSX.Element;
+      highlight?: boolean;
+    }[];
     hint: string;
   }[] = [
     {
       step: '1/3',
       question: 'Comment avez-vous connu notre établissement ?',
       options: [
-        { label: 'Facebook', icon: Facebook },
-        { label: 'Instagram', icon: Instagram, highlight: true },
-        { label: 'TikTok', icon: Music2 },
-        { label: 'Google', icon: Search },
+        { label: 'Facebook', brand: BRAND_ICONS.facebook },
+        { label: 'Instagram', brand: BRAND_ICONS.instagram, highlight: true },
+        { label: 'TikTok', brand: BRAND_ICONS.tiktok },
+        { label: 'Google', brand: BRAND_ICONS.google },
         { label: 'Bouche-à-oreille', icon: MessagesSquare },
         { label: 'Autre', icon: MoreHorizontal },
       ],
@@ -378,7 +373,7 @@ export function KioskDemo() {
           </div>
           <p className="min-h-12 text-center text-base font-bold">{s.question}</p>
           <div className="mt-4 grid grid-cols-2 gap-2">
-            {s.options.map(({ label, icon: Icon, highlight }) => (
+            {s.options.map(({ label, icon: Icon, brand: Brand, highlight }) => (
               <span
                 key={label}
                 className={`flex items-center justify-center gap-1.5 rounded-xl px-2 py-2.5 text-center text-xs font-semibold transition-colors ${
@@ -387,6 +382,11 @@ export function KioskDemo() {
                     : 'bg-white/10 hover:bg-white/20'
                 } ${label.length > 16 ? 'col-span-2' : ''}`}
               >
+                {Brand && (
+                  <span className="flex size-5 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white">
+                    <Brand className="size-4" />
+                  </span>
+                )}
                 {Icon && <Icon className="size-4 shrink-0" aria-hidden />}
                 {label}
               </span>

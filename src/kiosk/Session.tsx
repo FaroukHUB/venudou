@@ -12,6 +12,8 @@ import type {
 import { fetchKioskConfig, sendReviewEvent, startAutoSync, submitOrQueue } from '@/lib/kiosk/api';
 import { getCachedConfig, getDeviceToken, pendingCount } from '@/lib/kiosk/storage';
 import { iconFor } from '@/lib/icons';
+import { brandIconFor } from '@/lib/brand-icons';
+import { isDarkColor } from '@/lib/format';
 
 type Phase =
   | { name: 'question'; index: number }
@@ -174,6 +176,25 @@ export default function Session() {
     );
   }
 
+  // Thème par établissement : fond, forme des boutons, logo
+  const theme = config.questionnaire.theme ?? {};
+  const bgStyle = theme.backgroundColor ? { backgroundColor: theme.backgroundColor } : undefined;
+  const dark = isDarkColor(theme.backgroundColor, true);
+  const textMain = dark ? 'text-white' : 'text-navy-900';
+  const textSub = dark ? 'text-navy-100' : 'text-navy-600';
+  const accentText = dark ? 'text-turquoise-300' : 'text-turquoise-600';
+  const buttonBase = dark
+    ? 'bg-white/10 text-white hover:bg-turquoise-500'
+    : 'bg-navy-900/5 text-navy-900 hover:bg-turquoise-500 hover:text-white';
+  const shape = theme.buttonShape === 'round' ? 'rounded-full' : 'rounded-2xl';
+  const logo = theme.logoUrl ? (
+    <img
+      src={theme.logoUrl}
+      alt=""
+      className="mx-auto mb-3 h-14 w-auto max-w-[220px] object-contain"
+    />
+  ) : null;
+
   const offlineBanner = (offline || queued > 0) && (
     <p className="absolute top-3 right-3 flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs text-navy-100">
       <WifiOff className="size-3.5" aria-hidden />
@@ -190,16 +211,22 @@ export default function Session() {
     const question = questions[index];
     if (!question) return null;
     return (
-      <main className="kiosk-screen relative flex min-h-screen flex-col bg-navy-900 px-6 py-8 text-white">
+      <main
+        className={`kiosk-screen relative flex min-h-screen flex-col bg-navy-900 px-6 py-8 ${textMain}`}
+        style={bgStyle}
+      >
         {offlineBanner}
-        <p className="text-center text-lg font-semibold text-turquoise-300">
+        {logo}
+        <p className={`text-center text-lg font-semibold ${accentText}`}>
           {index + 1}/{questions.length}
         </p>
         <div
           className="animate-step mx-auto flex w-full max-w-3xl flex-1 flex-col justify-center"
           key={`${phase.name}-${index}`}
         >
-          <h1 className="text-center text-3xl font-bold sm:text-4xl">{question.label}</h1>
+          <h1 className={`text-center text-3xl font-bold sm:text-4xl ${textMain}`}>
+            {question.label}
+          </h1>
 
           {phase.name === 'question' ? (
             <>
@@ -207,14 +234,26 @@ export default function Session() {
                 className={`mt-10 grid gap-4 ${question.options.length > 4 ? 'grid-cols-2' : 'grid-cols-1 sm:grid-cols-2'}`}
               >
                 {question.options.map((option) => {
-                  const Icon = iconFor(option.icon);
+                  const Brand = brandIconFor(option.value, option.icon);
+                  const Icon = Brand ? null : iconFor(option.icon);
                   return (
                     <button
                       key={option.id}
                       onClick={() => selectOption(question, option, index)}
-                      className="flex min-h-[80px] items-center justify-center gap-3 rounded-2xl bg-white/10 px-6 py-5 text-xl font-semibold transition-colors hover:bg-turquoise-500 active:bg-turquoise-600"
+                      className={`flex min-h-[80px] items-center justify-center gap-3 px-6 py-5 text-xl font-semibold transition-colors active:bg-turquoise-600 ${shape} ${buttonBase}`}
                     >
-                      {Icon && <Icon className="size-7 shrink-0" aria-hidden />}
+                      {Brand && (
+                        <span className="flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white shadow-sm">
+                          <Brand className="size-7" />
+                        </span>
+                      )}
+                      {Icon && (
+                        <span
+                          className={`flex size-10 shrink-0 items-center justify-center rounded-full ${dark ? 'bg-white/15' : 'bg-navy-900/10'}`}
+                        >
+                          <Icon className="size-6" aria-hidden />
+                        </span>
+                      )}
                       {option.label}
                     </button>
                   );
@@ -223,7 +262,7 @@ export default function Session() {
               {!question.required && (
                 <button
                   onClick={() => skip(question, index)}
-                  className="mx-auto mt-8 flex items-center gap-1 rounded-xl px-6 py-3 text-lg text-navy-200 hover:text-white"
+                  className={`mx-auto mt-8 flex items-center gap-1 rounded-xl px-6 py-3 text-lg ${textSub} hover:opacity-70`}
                 >
                   Passer cette question <ChevronRight className="size-5" aria-hidden />
                 </button>
@@ -231,12 +270,12 @@ export default function Session() {
             </>
           ) : (
             <div className="mx-auto mt-10 w-full max-w-xl space-y-5">
-              <label className="block text-center text-lg text-navy-100" htmlFor="kiosk-free-text">
+              <label className={`block text-center text-lg ${textSub}`} htmlFor="kiosk-free-text">
                 Précisez si vous le souhaitez (facultatif)
               </label>
               <input
                 id="kiosk-free-text"
-                className="w-full rounded-2xl border-2 border-white/20 bg-white/10 px-5 py-4 text-xl placeholder:text-white/30 focus:border-turquoise-300"
+                className={`w-full rounded-2xl border-2 px-5 py-4 text-xl focus:border-turquoise-400 ${dark ? 'border-white/20 bg-white/10 placeholder:text-white/30' : 'border-navy-200 bg-white placeholder:text-navy-300'}`}
                 value={freeText}
                 maxLength={200}
                 onChange={(e) => setFreeText(e.target.value)}
@@ -290,14 +329,17 @@ export default function Session() {
 
   if (phase.name === 'reward') {
     return (
-      <main className="kiosk-screen animate-step flex min-h-screen flex-col items-center justify-center bg-navy-900 px-6 text-center text-white">
+      <main
+        className={`kiosk-screen animate-step flex min-h-screen flex-col items-center justify-center bg-navy-900 px-6 text-center ${textMain}`}
+        style={bgStyle}
+      >
         <PartyPopper className="size-16 text-turquoise-300" aria-hidden />
         <h1 className="mt-4 text-4xl font-bold">Félicitations, vous avez gagné !</h1>
         <p className="mt-3 text-2xl text-turquoise-200">{phase.reward.label}</p>
         <p className="mt-6 rounded-2xl bg-white px-8 py-4 font-mono text-4xl font-bold tracking-widest text-navy-900">
           {phase.reward.code}
         </p>
-        <p className="mt-4 max-w-md text-navy-100">
+        <p className={`mt-4 max-w-md ${textSub}`}>
           Photographiez ce code et présentez-le en caisse.
           {phase.reward.terms && ` ${phase.reward.terms}`}
         </p>
@@ -311,7 +353,7 @@ export default function Session() {
               scheduleReset(RESET_DELAY_MS);
             }
           }}
-          className="mt-8 rounded-2xl bg-turquoise-500 px-10 py-5 text-2xl font-bold hover:bg-turquoise-600"
+          className={`mt-8 bg-turquoise-500 px-10 py-5 text-2xl font-bold text-white hover:bg-turquoise-600 ${shape}`}
         >
           Continuer
         </button>
@@ -321,7 +363,10 @@ export default function Session() {
 
   if (phase.name === 'review-prompt') {
     return (
-      <main className="kiosk-screen animate-step flex min-h-screen flex-col items-center justify-center bg-navy-900 px-6 text-center text-white">
+      <main
+        className={`kiosk-screen animate-step flex min-h-screen flex-col items-center justify-center bg-navy-900 px-6 text-center ${textMain}`}
+        style={bgStyle}
+      >
         <Star className="size-14 text-turquoise-300" aria-hidden />
         <h1 className="mt-4 max-w-2xl text-3xl font-bold sm:text-4xl">
           Souhaitez-vous laisser un avis sur votre expérience ?
@@ -333,7 +378,7 @@ export default function Session() {
               setPhase({ name: 'thanks' });
               scheduleReset(RESET_DELAY_MS);
             }}
-            className="rounded-2xl bg-white/10 py-6 text-2xl font-semibold hover:bg-white/20"
+            className={`py-6 text-2xl font-semibold ${shape} ${dark ? 'bg-white/10 text-white hover:bg-white/20' : 'bg-navy-900/5 text-navy-900 hover:bg-navy-900/10'}`}
           >
             Non merci
           </button>
@@ -342,7 +387,7 @@ export default function Session() {
               void sendReviewEvent('accepted', clientSessionId);
               setPhase({ name: 'review-qr' });
             }}
-            className="rounded-2xl bg-turquoise-500 py-6 text-2xl font-bold hover:bg-turquoise-600"
+            className={`bg-turquoise-500 py-6 text-2xl font-bold text-white hover:bg-turquoise-600 ${shape}`}
           >
             Oui, volontiers
           </button>
@@ -353,7 +398,10 @@ export default function Session() {
 
   if (phase.name === 'review-qr') {
     return (
-      <main className="kiosk-screen animate-step flex min-h-screen flex-col items-center justify-center bg-navy-900 px-6 text-center text-white">
+      <main
+        className={`kiosk-screen animate-step flex min-h-screen flex-col items-center justify-center bg-navy-900 px-6 text-center ${textMain}`}
+        style={bgStyle}
+      >
         <h1 className="text-3xl font-bold">Scannez ce QR code avec votre téléphone</h1>
         <p className="mt-2 text-navy-100">
           Vous serez redirigé vers la page d'avis de l'établissement.
@@ -372,7 +420,7 @@ export default function Session() {
             setPhase({ name: 'thanks' });
             scheduleReset(RESET_DELAY_MS);
           }}
-          className="mt-8 rounded-2xl bg-white/10 px-10 py-4 text-xl font-semibold hover:bg-white/20"
+          className={`mt-8 px-10 py-4 text-xl font-semibold ${shape} ${dark ? 'bg-white/10 text-white hover:bg-white/20' : 'bg-navy-900/5 text-navy-900 hover:bg-navy-900/10'}`}
         >
           Terminé
         </button>
@@ -382,10 +430,13 @@ export default function Session() {
 
   // thanks
   return (
-    <main className="kiosk-screen animate-step flex min-h-screen flex-col items-center justify-center bg-navy-900 px-6 text-center text-white">
+    <main
+      className={`kiosk-screen animate-step flex min-h-screen flex-col items-center justify-center bg-navy-900 px-6 text-center ${textMain}`}
+      style={bgStyle}
+    >
       <Gift className="size-14 text-turquoise-300" aria-hidden />
       <h1 className="mt-4 text-4xl font-bold">Merci pour votre réponse !</h1>
-      <p className="mt-3 text-xl text-navy-100">Belle journée à vous.</p>
+      <p className={`mt-3 text-xl ${textSub}`}>Belle journée à vous.</p>
     </main>
   );
 }
