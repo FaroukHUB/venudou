@@ -9,8 +9,14 @@ import type {
   KioskQuestion,
   KioskReward,
 } from '@/lib/types';
-import { fetchKioskConfig, sendReviewEvent, startAutoSync, submitOrQueue } from '@/lib/kiosk/api';
-import { getCachedConfig, getDeviceToken, pendingCount } from '@/lib/kiosk/storage';
+import {
+  fetchKioskConfig,
+  isDeviceRejected,
+  sendReviewEvent,
+  startAutoSync,
+  submitOrQueue,
+} from '@/lib/kiosk/api';
+import { clearDevice, getCachedConfig, getDeviceToken, pendingCount } from '@/lib/kiosk/storage';
 import { iconFor } from '@/lib/icons';
 import { brandIconFor } from '@/lib/brand-icons';
 import { isDarkColor } from '@/lib/format';
@@ -52,7 +58,14 @@ export default function Session() {
       }
       try {
         setConfig(await fetchKioskConfig());
-      } catch {
+      } catch (err) {
+        // Jeton explicitement rejeté : la tablette n'existe plus côté serveur,
+        // on la réinitialise et on repasse par l'écran d'activation.
+        if (isDeviceRejected(err)) {
+          await clearDevice();
+          navigate('/kiosk', { replace: true });
+          return;
+        }
         const cached = await getCachedConfig();
         if (cached) setConfig(cached);
         else navigate('/kiosk', { replace: true });
@@ -67,7 +80,11 @@ export default function Session() {
       if (navigator.onLine) {
         fetchKioskConfig()
           .then(setConfig)
-          .catch(() => undefined);
+          .catch((err) => {
+            if (isDeviceRejected(err)) {
+              void clearDevice().then(() => navigate('/kiosk', { replace: true }));
+            }
+          });
       }
       void pendingCount().then(setQueued);
     }, 120_000);
@@ -80,7 +97,7 @@ export default function Session() {
       window.removeEventListener('online', onOnline);
       window.removeEventListener('offline', onOffline);
     };
-  }, []);
+  }, [navigate]);
 
   const questions: KioskQuestion[] = config?.questionnaire.questions ?? [];
 

@@ -40,6 +40,9 @@ export async function clearDevice(): Promise<void> {
   const d = await db();
   await d.delete('meta', 'deviceToken');
   await d.delete('meta', 'config');
+  // Les sessions en attente appartiennent à l'appareil désactivé : on les
+  // vide aussi, sinon elles seraient rejouées sous une autre identité.
+  await d.clear('pending_sessions');
 }
 
 export async function saveConfig(config: KioskConfig): Promise<void> {

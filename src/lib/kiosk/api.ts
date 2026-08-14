@@ -26,6 +26,16 @@ async function api<T>(path: string, options: RequestInit = {}): Promise<T> {
   return (await res.json()) as T;
 }
 
+/**
+ * Vrai si le serveur a explicitement rejeté le jeton de cette tablette
+ * (appareil supprimé ou base changée). Une panne réseau, un rate limit ou
+ * une suspension d'organisation ne comptent pas : la tablette doit alors
+ * continuer sur son cache, pas se désactiver.
+ */
+export function isDeviceRejected(err: unknown): boolean {
+  return err instanceof Error && err.message === 'DEVICE_NOT_FOUND';
+}
+
 export async function activateDevice(code: string): Promise<{ deviceToken: string }> {
   return api<{ deviceToken: string }>('/api/kiosk/activate', {
     method: 'POST',
